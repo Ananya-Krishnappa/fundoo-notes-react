@@ -1,61 +1,18 @@
 import React, { Component } from "react";
-import "./App.css";
-import FundooNotesBanner from "./FundooNotesBanner";
-import FundooNotesCreator from "./FundooNotesCreator";
-import FundooNotesDisplay from "./FundooNotesDisplay";
-export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userName: "Ananya",
-      noteList: [
-        {
-          title: "note1",
-          description: "note desc1",
-          isPinned: false,
-        },
-        {
-          title: "note2",
-          description: "note desc2",
-          isPinned: false,
-        },
-        {
-          title: "note3",
-          description: "note desc3",
-          isPinned: false,
-        },
-      ],
-    };
-  }
-
-  createNote = (title, description) => {
-    if (
-      !this.state.noteList.find((note) => {
-        return note.title === title;
-      })
-    ) {
-      this.setState({
-        noteList: [
-          ...this.state.noteList,
-          {
-            title: title,
-            description: description,
-            isPinned: false,
-          },
-        ],
-      });
+import { NotesDataStore } from "./data/DataStore";
+import { Provider } from "react-redux";
+import { BrowserRouter as Router, Route, Switch, Redirect }
+    from "react-router-dom";
+import { NoteConnector } from "./notes/NoteConnector";
+export class App extends Component {
+    render() {
+        return <Provider store={NotesDataStore}>
+            <Router>
+                <Switch>
+                    <Route path="/fundoo" component={NoteConnector} />
+                    <Redirect to="/fundoo" />
+                </Switch>
+            </Router>
+        </Provider>
     }
-  };
-
-  render = () => {
-    return (
-      <div>
-        <FundooNotesBanner userName={this.state.userName} />
-        <div className="container-fluid">
-          <FundooNotesCreator callback={this.createNote} />
-          <FundooNotesDisplay notes={this.state.noteList} />
-        </div>
-      </div>
-    );
-  };
 }
