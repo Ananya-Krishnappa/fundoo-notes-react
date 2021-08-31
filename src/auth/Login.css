@@ -1,0 +1,10 @@
+#login-container {
+  margin: auto;
+  width: 50%;
+  margin-top: 50px;
+  border: 1px solid #17A2E0;
+}
+.login-header{
+  background-color: #17A2E0;
+}
+  
