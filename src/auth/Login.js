@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { authConsumer } from "./AuthConsumer";
 import { ValidatedForm } from "../forms/ValidatedForm";
 import "./Login.css";
@@ -41,5 +41,6 @@ export const Login = withRouter(authConsumer(class extends Component {
                     />
                 </div>
             </div>
+            <Link data-testid="link" to="/register">Register</Link>
         </div>
 }))

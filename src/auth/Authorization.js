@@ -27,7 +27,7 @@ export const Authorization = authConsumer(class extends Component {
                             <Route component={Login} />
                         }
                         <Route path="/fundoo/notes" component={NoteConnector} />
-                        <Redirect to="/fundoo/notes" />
+                        <Redirect to="/" />
                     </Switch>
                 </div>
             </div>

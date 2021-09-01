@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect }
     from "react-router-dom";
 import { connect } from "react-redux";
-import { loadData } from "../data/ActionCreators";
-import { DataTypes } from "../data/Types";
+import { loadData } from "../store/ActionCreators";
+import { DataTypes } from "../store/Types";
 import { Note } from "./Note";
 const mapStateToProps = (dataStore) => ({
     ...dataStore

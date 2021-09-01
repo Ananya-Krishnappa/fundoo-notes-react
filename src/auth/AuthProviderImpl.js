@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Axios from "axios";
 import { AuthContext } from "./AuthContext";
-import { authUrl } from "../data/Urls";
+import { authUrl } from "../store/Urls";
 export class AuthProviderImpl extends Component {
     constructor(props) {
         super(props);
