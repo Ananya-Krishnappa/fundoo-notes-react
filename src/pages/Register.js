@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
     Grid,
     Paper,
-    Avatar,
     Typography,
     TextField,
     Button,
@@ -12,10 +11,8 @@ import * as Yup from "yup";
 import { Link } from "react-router-dom";
 import "../scss/Auth.scss";
 import { useHistory } from "react-router-dom";
-import user from "../services/User";
 import Notification from "../components/Notification";
-const userobject = new user();
-
+import axios from "axios";
 const Register = () => {
     const history = useHistory();
     const [notify, setNotify] = useState({
@@ -50,27 +47,25 @@ const Register = () => {
             const userData = {
                 firstName: values.firstName,
                 lastName: values.lastName,
-                emailId: values.email,
+                email: values.email,
                 password: values.password,
             };
-            userobject
-                .SignUpData(userData)
-                .then((res) => {
-                    if (res.data.success === true) {
-                        setTimeout(function () { history.push("/login") }, 2000);
-                        setNotify({
-                            isOpen: true,
-                            message: "User Registration Successful",
-                            type: "success",
-                        });
-                    } else {
-                        setNotify({
-                            isOpen: true,
-                            message: "Something went wrong",
-                            type: "error",
-                        });
-                    }
-                })
+            axios.post("http://localhost:3000/register", userData).then((res) => {
+                if (res.data.success === true) {
+                    setNotify({
+                        isOpen: true,
+                        message: "User Registration Successful",
+                        type: "success",
+                    });
+                    setTimeout(function () { history.push("/login") }, 5000);
+                } else {
+                    setNotify({
+                        isOpen: true,
+                        message: "Something went wrong",
+                        type: "error",
+                    });
+                }
+            })
                 .catch((error) => {
                     let message;
                     if (error.message.includes("500")) {
@@ -123,7 +118,7 @@ const Register = () => {
                             <Form className="register-form-inputs" data-testid="form">
                                 <Grid container spacing={1} className="register-form-element">
                                     <Grid item xs={12} sm={6}>
-                                        <Field 
+                                        <Field
                                             className="register-form-inputs"
                                             as={TextField}
                                             data-testid="firstName"
@@ -137,7 +132,7 @@ const Register = () => {
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        <Field 
+                                        <Field
                                             className="register-form-inputs"
                                             as={TextField}
                                             data-testid="lastName"
@@ -152,19 +147,19 @@ const Register = () => {
                                     </Grid>
                                 </Grid>
                                 <Grid container spacing={1} className="register-form-element">
-                                <Field
-                                    className="register-form-inputs"
-                                    spacing={2}
-                                    as={TextField}
-                                    data-testid="email"
-                                    label="Email Address"
-                                    name="email"
-                                    placeholder="Enter Email"
-                                    variant="outlined"
-                                    fullWidth
-                                    required
-                                    helperText={<ErrorMessage name='email'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
-                                />
+                                    <Field
+                                        className="register-form-inputs"
+                                        spacing={2}
+                                        as={TextField}
+                                        data-testid="email"
+                                        label="Email Address"
+                                        name="email"
+                                        placeholder="Enter Email"
+                                        variant="outlined"
+                                        fullWidth
+                                        required
+                                        helperText={<ErrorMessage name='email'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
+                                    />
                                 </Grid>
                                 <Grid container spacing={1} className="register-form-element">
                                     <Grid item xs={12} sm={6}>
@@ -199,16 +194,16 @@ const Register = () => {
                                     </Grid>
                                 </Grid>
                                 <Grid container spacing={1} className="register-form-element submit-button">
-                                <Button
-                                    type="submit"
-                                    data-testid="submitButton"
-                                    variant="contained"
-                                    disabled={props.isSubmitting}
-                                    className="register-form-button"
-                                    fullWidth
-                                >
-                                    {props.isSubmitting ? "Loading" : "Register"}
-                                </Button>
+                                    <Button
+                                        type="submit"
+                                        data-testid="submitButton"
+                                        variant="contained"
+                                        disabled={props.isSubmitting}
+                                        className="register-form-button"
+                                        fullWidth
+                                    >
+                                        {props.isSubmitting ? "Loading" : "Register"}
+                                    </Button>
                                 </Grid>
                             </Form>
                         )}
