@@ -12,6 +12,7 @@ import * as Yup from "yup";
 import "../scss/Auth.scss";
 import { useHistory } from "react-router";
 import Notification from "../components/Notification";
+import { getTitle } from "../components/Title";
 import { AuthContext } from "../auth/AuthContext";
 const Login = () => {
   const { authenticate } = useContext(AuthContext);
@@ -73,24 +74,13 @@ const Login = () => {
       props.setSubmitting(false);
     }
   };
-
   return (
     <div>
       <Grid className="formStyle">
         <Paper className="login-container login-paper">
           <div className="login-form-container">
             <h3 className="header">
-              <span className="fun1">F</span>
-              <span className="fun2">u</span>
-              <span className="fun3">n</span>
-              <span className="fun4">d</span>
-              <span className="fun5">o</span>
-              <span className="fun6">o</span>
-              <span className="fun1">N</span>
-              <span className="fun2">o</span>
-              <span className="fun3">t</span>
-              <span className="fun4">e</span>
-              <span className="fun5">s</span>
+              {getTitle("FundooNotes")}
             </h3>
             <Grid>
               <h5>Sign in</h5>

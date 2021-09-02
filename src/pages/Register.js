@@ -8,11 +8,13 @@ import {
 } from "@material-ui/core";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Notification from "../components/Notification";
+import { getTitle } from "../components/Title";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
 import "../scss/Auth.scss";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { Header } from "../components/Header";
 const Register = () => {
     const history = useHistory();
     const [notify, setNotify] = useState({
@@ -87,136 +89,130 @@ const Register = () => {
             props.setSubmitting(false);
         }
     };
-
     return (
-        <Grid className="formStyle">
-            <Paper className="register-container register-paper">
-                <div className="register-form">
-                    <h3 className="header">
-                        <span className="fun1">F</span>
-                        <span className="fun2">u</span>
-                        <span className="fun3">n</span>
-                        <span className="fun4">d</span>
-                        <span className="fun5">o</span>
-                        <span className="fun6">o</span>
-                        <span className="fun1">N</span>
-                        <span className="fun2">o</span>
-                        <span className="fun3">t</span>
-                        <span className="fun4">e</span>
-                        <span className="fun5">s</span>
-                    </h3>
-                    <Grid>
-                        <h5>Create your Fundoo Notes Account</h5>
-                    </Grid>
-                    <Formik
-                        initialValues={initialValues}
-                        onSubmit={onSubmit}
-                        validationSchema={validationSchema}
-                    >
-                        {(props) => (
-                            <Form className="register-form-inputs" data-testid="form">
-                                <Grid container spacing={1} className="register-form-element">
-                                    <Grid item xs={12} sm={6}>
+        <div>
+            <Header></Header>
+            <Grid className="formStyle">
+                <Paper className="register-container register-paper">
+                    <div className="register-form">
+                        <h3 className="header">
+                            <React.Fragment>
+                                {getTitle("FundooNotes")}
+                            </React.Fragment>
+                        </h3>
+                        <Grid>
+                            <h5>Create your Fundoo Notes Account</h5>
+                        </Grid>
+                        <Formik
+                            initialValues={initialValues}
+                            onSubmit={onSubmit}
+                            validationSchema={validationSchema}
+                        >
+                            {(props) => (
+                                <Form className="register-form-inputs" data-testid="form">
+                                    <Grid container spacing={1} className="register-form-element">
+                                        <Grid item xs={12} sm={6}>
+                                            <Field
+                                                className="register-form-inputs"
+                                                as={TextField}
+                                                data-testid="firstName"
+                                                label="First Name"
+                                                name="firstName"
+                                                placeholder="Enter First Name"
+                                                variant="outlined"
+                                                fullWidth
+                                                required
+                                                helperText={<ErrorMessage name='firstName'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            <Field
+                                                className="register-form-inputs"
+                                                as={TextField}
+                                                data-testid="lastName"
+                                                label="Last Name"
+                                                name="lastName"
+                                                placeholder="Enter Last Name"
+                                                variant="outlined"
+                                                fullWidth
+                                                required
+                                                helperText={<ErrorMessage name='lastName'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <Grid container spacing={1} className="register-form-element">
                                         <Field
                                             className="register-form-inputs"
+                                            spacing={2}
                                             as={TextField}
-                                            data-testid="firstName"
-                                            label="First Name"
-                                            name="firstName"
-                                            placeholder="Enter First Name"
+                                            data-testid="email"
+                                            label="Email Address"
+                                            name="email"
+                                            placeholder="Enter Email"
                                             variant="outlined"
                                             fullWidth
                                             required
-                                            helperText={<ErrorMessage name='firstName'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
+                                            helperText={<ErrorMessage name='email'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
                                         />
                                     </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <Field
-                                            className="register-form-inputs"
-                                            as={TextField}
-                                            data-testid="lastName"
-                                            label="Last Name"
-                                            name="lastName"
-                                            placeholder="Enter Last Name"
-                                            variant="outlined"
+                                    <Grid container spacing={1} className="register-form-element">
+                                        <Grid item xs={12} sm={6}>
+                                            <Field
+                                                className="register-form-inputs"
+                                                as={TextField}
+                                                data-testid="password"
+                                                label="Password"
+                                                name="password"
+                                                placeholder="Enter password"
+                                                variant="outlined"
+                                                type="password"
+                                                fullWidth
+                                                required
+                                                helperText={<ErrorMessage name='password'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            <Field
+                                                className="register-form-inputs"
+                                                as={TextField}
+                                                data-testid="confirmPassword"
+                                                label="Confirm"
+                                                name="confirmPassword"
+                                                placeholder="Enter password"
+                                                variant="outlined"
+                                                type="password"
+                                                fullWidth
+                                                required
+                                                helperText={<ErrorMessage name='confirmPassword'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <Grid container spacing={1} className="register-form-element submit-button">
+                                        <Button
+                                            type="submit"
+                                            data-testid="submitButton"
+                                            variant="contained"
+                                            disabled={props.isSubmitting}
+                                            className="register-form-button"
                                             fullWidth
-                                            required
-                                            helperText={<ErrorMessage name='lastName'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
-                                        />
+                                        >
+                                            {props.isSubmitting ? "Loading" : "Register"}
+                                        </Button>
                                     </Grid>
-                                </Grid>
-                                <Grid container spacing={1} className="register-form-element">
-                                    <Field
-                                        className="register-form-inputs"
-                                        spacing={2}
-                                        as={TextField}
-                                        data-testid="email"
-                                        label="Email Address"
-                                        name="email"
-                                        placeholder="Enter Email"
-                                        variant="outlined"
-                                        fullWidth
-                                        required
-                                        helperText={<ErrorMessage name='email'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
-                                    />
-                                </Grid>
-                                <Grid container spacing={1} className="register-form-element">
-                                    <Grid item xs={12} sm={6}>
-                                        <Field
-                                            className="register-form-inputs"
-                                            as={TextField}
-                                            data-testid="password"
-                                            label="Password"
-                                            name="password"
-                                            placeholder="Enter password"
-                                            variant="outlined"
-                                            type="password"
-                                            fullWidth
-                                            required
-                                            helperText={<ErrorMessage name='password'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <Field
-                                            className="register-form-inputs"
-                                            as={TextField}
-                                            data-testid="confirmPassword"
-                                            label="Confirm"
-                                            name="confirmPassword"
-                                            placeholder="Enter password"
-                                            variant="outlined"
-                                            type="password"
-                                            fullWidth
-                                            required
-                                            helperText={<ErrorMessage name='confirmPassword'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <Grid container spacing={1} className="register-form-element submit-button">
-                                    <Button
-                                        type="submit"
-                                        data-testid="submitButton"
-                                        variant="contained"
-                                        disabled={props.isSubmitting}
-                                        className="register-form-button"
-                                        fullWidth
-                                    >
-                                        {props.isSubmitting ? "Loading" : "Register"}
-                                    </Button>
-                                </Grid>
-                            </Form>
-                        )}
-                    </Formik>
-                    <Typography className="sign-in-link">
-                        <Link to="/login">Sign in instead</Link>
-                    </Typography>
-                </div>
-                <div className="register-avatar">
-                    <img alt="register-image" src="https://ssl.gstatic.com/accounts/signup/glif/account.svg"></img>
-                </div>
-            </Paper>
-            <Notification notify={notify} setNotify={setNotify} />
-        </Grid >
+                                </Form>
+                            )}
+                        </Formik>
+                        <Typography className="sign-in-link">
+                            <Link to="/login">Sign in instead</Link>
+                        </Typography>
+                    </div>
+                    <div className="register-avatar">
+                        <img alt="register-image" src="https://ssl.gstatic.com/accounts/signup/glif/account.svg"></img>
+                    </div>
+                </Paper>
+                <Notification notify={notify} setNotify={setNotify} />
+            </Grid >
+        </div>
     );
 };
 

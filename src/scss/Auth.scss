@@ -137,6 +137,10 @@
         text-align: center;
         padding: 50px !important;
     }
+    .register-paper, .login-paper {
+        position: relative;
+        bottom: 5%;
+    }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */

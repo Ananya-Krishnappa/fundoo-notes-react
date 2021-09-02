@@ -3,21 +3,11 @@ import { Route, Redirect, Switch } from "react-router-dom";
 import Login from "../pages/Login";
 import { authConsumer } from "./AuthConsumer";
 import { NoteConnector } from "../notes/NoteConnector";
+import { Header } from "../components/Header";
 export const Authorization = authConsumer(class extends Component {
     render() {
         return <div className="container-fluid">
-            <div className="row">
-                <div className="col bg-info text-white">
-                    <div className="col-9 navbar-brand">FundooNotes</div>
-                    {this.props.isAuthenticated &&
-                        <button onClick={this.props.signout}
-                            className=
-                            "btn btn-secondary m-2 col-2">
-                            Log Out
-                        </button>
-                    }
-                </div>
-            </div>
+            <Header></Header>
             <div className="row">
                 <div className="col fundoo-body">
                     <Switch>
