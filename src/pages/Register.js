@@ -90,7 +90,7 @@ const Register = () => {
 
     return (
         <Grid className="formStyle">
-            <Paper className="register-container paperStyle">
+            <Paper className="register-container register-paper">
                 <div className="register-form">
                     <h3 className="header">
                         <span className="fun1">F</span>
@@ -99,7 +99,6 @@ const Register = () => {
                         <span className="fun4">d</span>
                         <span className="fun5">o</span>
                         <span className="fun6">o</span>
-                        <span> </span>
                         <span className="fun1">N</span>
                         <span className="fun2">o</span>
                         <span className="fun3">t</span>
@@ -213,7 +212,7 @@ const Register = () => {
                     </Typography>
                 </div>
                 <div className="register-avatar">
-                    <i class="fas fa-user-astronaut"></i>
+                    <img src="https://ssl.gstatic.com/accounts/signup/glif/account.svg"></img>
                 </div>
             </Paper>
             <Notification notify={notify} setNotify={setNotify} />

@@ -4,8 +4,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #949090;
-    .paperStyle {
+    .register-paper {
       min-height: 100vh;
       display: flex;
       justify-content: left;
@@ -14,7 +13,20 @@
       border-radius: 8px;
       border: 1px solid #dadce0;
       background-color: #ffffff;
-      margin: 10px 0;
+    }
+    .login-paper {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: 1px solid #dadce0;
+        background-color: #ffffff;
+        text-align: center;
+      }
+    .fundoo-body {
+        padding: 0;
     }
     .fun1 {
         color: rgb(66, 133, 244);
@@ -38,12 +50,24 @@
         flex-basis: 450px;
         flex-grow: 1;
     }
+    .login-form-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 20px;
+    }
+    .login-form {
+        margin: 20px;
+    }
+    .login-form-input {
+        min-height: 90px;
+    }
     .register-avatar{
         width: 250px;
         height: 100%;
         text-align: center;
         position: relative;
-        top: 24%;
+        top: 20%;
         left: 4%;
     }
     .fa-user-astronaut {
@@ -56,14 +80,14 @@
     }
     .register-form-element {
         min-height: 90px;
+        .MuiInputLabel-formControl {
+            top: -7px;
+        }
     }
-    .register-form-inputs input {
+    .register-form-inputs input{
         font-size: 14px;
         height: 30px;
         padding: 6px 8px;
-    }
-    .MuiInputLabel-formControl {
-        top: -7px;
     }
     .register-form-button {
         background-color: #1a73e8;
@@ -85,7 +109,6 @@
         margin: 5px 0;
     }
   }
-  
   .header {
     font-weight: bold;
     color: blue;
@@ -101,6 +124,10 @@
         width: 450px;
         padding: 48px 40px 36px;
     }
+    .login-container{
+        min-height: 400px !important;
+        width: 350px;
+    }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -112,6 +139,10 @@
         width: 750px;
         min-height: 500px !important;
         padding: 48px 40px 36px !important;
+    }
+    .login-container{
+        width: 600px;
+        min-height: 400px !important;
     }
 }
 
