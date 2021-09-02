@@ -129,6 +129,7 @@ const Login = () => {
                       <ErrorMessage name='password'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>
                     }
                   />
+                  <Link className="forgot-password-link" data-testid="link" to="/forgotPassword">Forgot password?</Link>
                   <Button
                     type="submit"
                     data-testid="button"

@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect }
 import { AuthProviderImpl } from "./auth/AuthProviderImpl";
 import { Authorization } from "./auth/Authorization";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
 export class App extends Component {
     render() {
         return <Provider store={NotesDataStore}>
@@ -17,6 +18,7 @@ export class App extends Component {
                                 <Authorization {...routeProps} />
                         } />
                         <Route path="/register" component={Register} />
+                        <Route path="/forgotPassword" component={ForgotPassword} />
                         <Redirect to="/fundoo" />
                     </Switch>
                 </Router>

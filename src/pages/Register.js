@@ -7,11 +7,11 @@ import {
     Button,
 } from "@material-ui/core";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import Notification from "../components/Notification";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
 import "../scss/Auth.scss";
 import { useHistory } from "react-router-dom";
-import Notification from "../components/Notification";
 import axios from "axios";
 const Register = () => {
     const history = useHistory();
@@ -72,10 +72,10 @@ const Register = () => {
                         message = "User Account already Exists try login";
                     }
                     else if ((error.message.includes("400"))) {
-                        message = "invalid input";
+                        message = "Invalid input";
                     }
                     else {
-                        message = "something went wrong";
+                        message = "Something went wrong";
                     }
                     setNotify({
                         isOpen: true,
@@ -212,7 +212,7 @@ const Register = () => {
                     </Typography>
                 </div>
                 <div className="register-avatar">
-                    <img src="https://ssl.gstatic.com/accounts/signup/glif/account.svg"></img>
+                    <img alt="register-image" src="https://ssl.gstatic.com/accounts/signup/glif/account.svg"></img>
                 </div>
             </Paper>
             <Notification notify={notify} setNotify={setNotify} />

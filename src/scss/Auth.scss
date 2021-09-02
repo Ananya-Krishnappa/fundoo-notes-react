@@ -108,6 +108,9 @@
     .sign-in-link{
         margin: 5px 0;
     }
+    .forgot-password-link {
+        display: flex;
+    }
   }
   .header {
     font-weight: bold;
@@ -128,6 +131,12 @@
         min-height: 400px !important;
         width: 350px;
     }
+    .forgot-password-container{
+        min-height: 400px !important;
+        width: 350px;
+        text-align: center;
+        padding: 50px !important;
+    }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -143,6 +152,12 @@
     .login-container{
         width: 600px;
         min-height: 400px !important;
+    }
+    .forgot-password-container{
+        width: 600px;
+        min-height: 400px !important;
+        text-align: center;
+        padding: 50px !important;
     }
 }
 

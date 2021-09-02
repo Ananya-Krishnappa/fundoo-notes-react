@@ -13,3 +13,13 @@ export const loadData = (dataType) => (
         })
         )
     })
+export const register = (dataType, userInfo) => (
+    {
+        type: ActionTypes.REGISTER,
+        payload: dataSource.StoreData(dataType, userInfo).then(response =>
+        ({
+            dataType,
+            data: response.data,
+        })
+        )
+    })
