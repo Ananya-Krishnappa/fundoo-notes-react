@@ -3,8 +3,8 @@ import { NotesDataStore } from "./store/DataStore";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch, Redirect }
     from "react-router-dom";
-import { AuthProviderImpl } from "./auth/AuthProviderImpl";
-import { Authorization } from "./auth/Authorization";
+import { AuthProviderImpl } from "./context/AuthProviderImpl";
+import { Authorization } from "./context/Authorization";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";

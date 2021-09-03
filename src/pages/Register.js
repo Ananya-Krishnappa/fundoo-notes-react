@@ -11,7 +11,7 @@ import Notification from "../components/Notification";
 import { getTitle } from "../components/Title";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
-import "../scss/Auth.scss";
+import "../global/styles.scss";
 import { useHistory } from "react-router-dom";
 import { Header } from "../components/Header";
 import { register } from "../services/Api";
@@ -59,7 +59,7 @@ const Register = () => {
                         message: "User Registration Successful",
                         type: "success",
                     });
-                    setTimeout(function () { history.push("/login") }, 5000);
+                    setTimeout(function () { history.push("/login") }, 2000);
                 } else {
                     setNotify({
                         isOpen: true,

@@ -9,7 +9,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import Notification from "../components/Notification";
 import { getTitle } from "../components/Title";
 import * as Yup from "yup";
-import "../scss/Auth.scss";
+import "../global/styles.scss";
 import { useHistory } from "react-router-dom";
 import { Header } from "../components/Header";
 import { forgotPassword } from "../services/Api";
