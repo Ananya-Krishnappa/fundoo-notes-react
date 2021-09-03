@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Grid,
   Paper,
@@ -34,7 +34,6 @@ const Login = () => {
       "Password must contain at min 8 char, 1(upper, lower, num, special char)"
     ),
   });
-
   const onSubmit = (values, props) => {
     if (values) {
       const credentials = {
@@ -48,7 +47,7 @@ const Login = () => {
           } else {
             setNotify({
               isOpen: true,
-              message: "Something went wrong",
+              message: res.message,
               type: "error",
             });
           }
@@ -62,7 +61,7 @@ const Login = () => {
             message = "Invalid input";
           }
           else {
-            message = "Something went wrong";
+            message = error.response && error.response.data.message;
           }
           setNotify({
             isOpen: true,
@@ -101,7 +100,6 @@ const Login = () => {
                     placeholder="Enter Email"
                     variant="outlined"
                     fullWidth
-                    required
                     helperText={<ErrorMessage name='email'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
                   />
                   <Field
@@ -114,7 +112,6 @@ const Login = () => {
                     variant="outlined"
                     type="password"
                     fullWidth
-                    required
                     helperText={
                       <ErrorMessage name='password'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>
                     }

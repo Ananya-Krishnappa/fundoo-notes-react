@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import "./Note.css";
-import FundooNotesDisplay from "./FundooNotesDisplay";
+import SideNav from "../components/SideNav";
 export class Note extends Component {
   render = () => {
     return (
       <div>
         <div className="container-fluid">
-          <FundooNotesDisplay notes={this.props.notes} />
+          <SideNav notes={this.props.notes}></SideNav>
         </div>
       </div>
     );

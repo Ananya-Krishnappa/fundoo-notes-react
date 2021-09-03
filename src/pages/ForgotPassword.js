@@ -11,8 +11,8 @@ import { getTitle } from "../components/Title";
 import * as Yup from "yup";
 import "../scss/Auth.scss";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
 import { Header } from "../components/Header";
+import { forgotPassword } from "../services/Api";
 const ForgotPassword = () => {
     const history = useHistory();
     const [notify, setNotify] = useState({
@@ -33,7 +33,7 @@ const ForgotPassword = () => {
             const userData = {
                 email: values.email,
             };
-            axios.post("http://localhost:3000/forgotPassword", userData).then((res) => {
+            forgotPassword(userData).then((res) => {
                 if (res.data.success === true) {
                     setNotify({
                         isOpen: true,

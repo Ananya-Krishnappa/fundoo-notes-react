@@ -7,7 +7,8 @@ export class AuthProviderImpl extends Component {
         super(props);
         this.state = {
             isAuthenticated: false,
-            webToken: null
+            webToken: null,
+            userId: null,
         }
     }
     authenticate = (credentials) => {
@@ -15,7 +16,8 @@ export class AuthProviderImpl extends Component {
             if (response.data.success === true) {
                 this.setState({
                     isAuthenticated: true,
-                    webToken: response.data.token
+                    webToken: response.data.data.token,
+                    userId: response.data.data.id
                 })
                 return true;
             } else {

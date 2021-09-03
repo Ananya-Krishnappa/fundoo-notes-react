@@ -7,7 +7,10 @@ import { Header } from "../components/Header";
 export const Authorization = authConsumer(class extends Component {
     render() {
         return <div className="container-fluid">
-            <Header></Header>
+            {
+                !this.props.isAuthenticated &&
+                <Header></Header>
+            }
             <div className="row">
                 <div className="col fundoo-body">
                     <Switch>

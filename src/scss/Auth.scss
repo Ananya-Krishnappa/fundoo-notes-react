@@ -14,7 +14,7 @@
       border: 1px solid #dadce0;
       background-color: #ffffff;
     }
-    .login-paper {
+    .login-paper {  
         min-height: 100vh;
         display: flex;
         justify-content: center;
@@ -24,7 +24,7 @@
         border: 1px solid #dadce0;
         background-color: #ffffff;
         text-align: center;
-      }
+    }
     .fundoo-body {
         padding: 0;
     }
@@ -111,11 +111,6 @@
     .forgot-password-link {
         display: flex;
     }
-  }
-  .header {
-    font-weight: bold;
-    color: blue;
-    padding: 5;
   }
   /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {}

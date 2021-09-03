@@ -13,8 +13,8 @@ import * as Yup from "yup";
 import { Link } from "react-router-dom";
 import "../scss/Auth.scss";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
 import { Header } from "../components/Header";
+import { register } from "../services/Api";
 const Register = () => {
     const history = useHistory();
     const [notify, setNotify] = useState({
@@ -52,7 +52,7 @@ const Register = () => {
                 email: values.email,
                 password: values.password,
             };
-            axios.post("http://localhost:3000/register", userData).then((res) => {
+            register(userData).then((res) => {
                 if (res.data.success === true) {
                     setNotify({
                         isOpen: true,
@@ -121,7 +121,6 @@ const Register = () => {
                                                 placeholder="Enter First Name"
                                                 variant="outlined"
                                                 fullWidth
-                                                required
                                                 helperText={<ErrorMessage name='firstName'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
                                             />
                                         </Grid>
@@ -135,7 +134,6 @@ const Register = () => {
                                                 placeholder="Enter Last Name"
                                                 variant="outlined"
                                                 fullWidth
-                                                required
                                                 helperText={<ErrorMessage name='lastName'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
                                             />
                                         </Grid>
@@ -151,7 +149,6 @@ const Register = () => {
                                             placeholder="Enter Email"
                                             variant="outlined"
                                             fullWidth
-                                            required
                                             helperText={<ErrorMessage name='email'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
                                         />
                                     </Grid>
@@ -167,7 +164,6 @@ const Register = () => {
                                                 variant="outlined"
                                                 type="password"
                                                 fullWidth
-                                                required
                                                 helperText={<ErrorMessage name='password'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
                                             />
                                         </Grid>
@@ -182,7 +178,6 @@ const Register = () => {
                                                 variant="outlined"
                                                 type="password"
                                                 fullWidth
-                                                required
                                                 helperText={<ErrorMessage name='confirmPassword'>{msg => <div style={{ color: 'red' }}>{msg}</div>}</ErrorMessage>}
                                             />
                                         </Grid>

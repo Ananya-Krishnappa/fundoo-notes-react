@@ -11,8 +11,8 @@ import * as Yup from "yup";
 import { getTitle } from "../components/Title";
 import "../scss/Auth.scss";
 import { useHistory, useLocation } from "react-router-dom";
-import axios from "axios";
 import { Header } from "../components/Header";
+import { resetPassword } from "../services/Api";
 const ResetPassword = () => {
     let location = useLocation();
     const history = useHistory();
@@ -47,7 +47,7 @@ const ResetPassword = () => {
             let query = GetQuery();
             const id = query.get("id");
             const token = query.get("token");
-            axios.post(`http://localhost:3000/resetPassword?id=${id}&token=${token}`, userData).then((res) => {
+            resetPassword(id, token, userData).then((res) => {
                 if (res.data.success === true) {
                     setNotify({
                         isOpen: true,
