@@ -9,11 +9,11 @@ import {
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
-import "../scss/Auth.scss";
+import "../global/styles.scss";
 import { useHistory } from "react-router";
 import Notification from "../components/Notification";
 import { getTitle } from "../components/Title";
-import { AuthContext } from "../auth/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 const Login = () => {
   const { authenticate } = useContext(AuthContext);
   const history = useHistory();

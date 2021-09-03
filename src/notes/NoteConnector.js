@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { loadData } from "../store/ActionCreators";
 import { DataTypes } from "../store/Types";
 import { Note } from "./Note";
-import { authConsumer } from "../auth/AuthConsumer";
+import { authConsumer } from "../context/AuthConsumer";
 const mapStateToProps = (dataStore) => ({
     ...dataStore
 });

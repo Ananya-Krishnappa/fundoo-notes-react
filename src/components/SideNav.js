@@ -19,7 +19,7 @@ import NoteIcon from '@material-ui/icons/Note';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArchiveIcon from '@material-ui/icons/Archive';
 import CardList from "./CardList";
-import { AuthContext } from "../auth/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { findAllNotes, findTrashedNotes, findArchivedNotes } from "../services/Api";
 import Notification from "../components/Notification";
