@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import Login from "../pages/Login";
 import { authConsumer } from "./AuthConsumer";
-import { NoteConnector } from "../notes/NoteConnector";
+import Dashboard from "../components/Dashboard";
 import { Header } from "../components/Header";
 export const Authorization = authConsumer(class extends Component {
     render() {
@@ -18,7 +18,7 @@ export const Authorization = authConsumer(class extends Component {
                             !this.props.isAuthenticated &&
                             <Route component={Login} />
                         }
-                        <Route path="/fundoo/notes" component={NoteConnector} />
+                        <Route path="/fundoo/notes" component={Dashboard} />
                         <Redirect to="/fundoo/notes" />
                     </Switch>
                 </div>
