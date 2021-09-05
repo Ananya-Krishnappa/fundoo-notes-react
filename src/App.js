@@ -8,6 +8,7 @@ import { Authorization } from "./context/Authorization";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import "./App.css";
 export class App extends Component {
     render() {
         return <Provider store={NotesDataStore}>
