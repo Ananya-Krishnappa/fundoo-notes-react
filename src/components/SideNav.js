@@ -131,6 +131,9 @@ export default function SideNav(props) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+    const saveNote = (noteData) => {
+        console.log(noteData);
+    }
     return (
         <div className={classes.root}>
             <CssBaseline />
