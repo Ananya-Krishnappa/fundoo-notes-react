@@ -21,8 +21,8 @@ import ArchiveIcon from '@material-ui/icons/Archive';
 import CardList from "./CardList";
 import { AuthContext } from "../context/AuthContext";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { findAllNotes, findTrashedNotes, findArchivedNotes } from "../services/Api";
 import Notification from "../components/Notification";
+import { useHistory } from "react-router";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -93,73 +93,28 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function MiniDrawer(props) {
+export default function SideNav(props) {
+    const history = useHistory();
     const { signout, userId } = useContext(AuthContext);
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = useState(false);
-    const [notes, setNotes] = useState([]);
     const [notify, setNotify] = useState({
         isOpen: false,
         message: "",
         type: "",
     });
-    useEffect(() => {
-        setNotes(props.notes);
-    });
-    const getNotesSuccess = (res) => {
-        if (res.data.success === true) {
-            setNotes(res.data.data);
-            setNotify({
-                isOpen: true,
-                message: "Notes retrieved successfully",
-                type: "success",
-            });
-        } else {
-            setNotify({
-                isOpen: true,
-                message: res.message,
-                type: "error",
-            });
-        }
-    }
-    const getNotesError = (error) => {
-        let message;
-        if (error.message.includes("500")) {
-            message = "Error while retrieving the notes";
-        }
-        else if ((error.message.includes("400"))) {
-            message = "Bad request";
-        }
-        else {
-            message = error.response && error.response.data.message;
-        }
-        setNotify({
-            isOpen: true,
-            message: message,
-            type: "error",
-        });
-    }
     const getAllNotes = () => {
-        findAllNotes(userId).then((res) => {
-            getNotesSuccess(res);
-        }).catch((error) => {
-            getNotesError(error);
-        });
+        history.push("/fundoo/notes/all");
+        props.callback("all");
     };
     const getArchivedNotes = () => {
-        findTrashedNotes(userId).then((res) => {
-            getNotesSuccess(res);
-        }).catch((error) => {
-            getNotesError(error);
-        });
+        history.push("/fundoo/notes/archive");
+        props.callback("archive");
     };
     const getTrashedNotes = () => {
-        findArchivedNotes(userId).then((res) => {
-            getNotesSuccess(res);
-        }).catch((error) => {
-            getNotesError(error);
-        });
+        history.push("/fundoo/notes/trash");
+        props.callback("trash");
     };
     const primaryMenuItems = [
         { name: "Notes", icon: <NoteIcon />, action: getAllNotes },
@@ -175,7 +130,6 @@ export default function MiniDrawer(props) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -249,7 +203,7 @@ export default function MiniDrawer(props) {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <CardList notes={notes}></CardList>
+                <CardList notes={props.notes}></CardList>
             </main>
             <Notification notify={notify} setNotify={setNotify} />
         </div>
