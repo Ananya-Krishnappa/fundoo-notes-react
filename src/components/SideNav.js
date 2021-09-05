@@ -23,6 +23,7 @@ import { AuthContext } from "../context/AuthContext";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Notification from "../components/Notification";
 import { useHistory } from "react-router";
+import CreateNote from "./CreateNote";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -203,6 +204,7 @@ export default function SideNav(props) {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
+                <CreateNote></CreateNote>
                 <CardList notes={props.notes}></CardList>
             </main>
             <Notification notify={notify} setNotify={setNotify} />
