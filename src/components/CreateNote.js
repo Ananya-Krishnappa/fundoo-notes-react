@@ -1,7 +1,12 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./CreateNote.scss";
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import { ClickAwayListener } from '@material-ui/core';
+import { createNote } from "../services/Api";
+import { AuthContext } from "../context/AuthContext";
+import Notification from "../components/Notification";
+import { useHistory } from "react-router";
 const useStyles = makeStyles((theme) => ({
     root: {
         '& > *': {
@@ -10,51 +15,97 @@ const useStyles = makeStyles((theme) => ({
         },
     },
 }));
-
 export default function CreateNote(props) {
-    const wrapperRef = useRef(null);
-    useOutsideAlerter(wrapperRef);
+    const history = useHistory();
+    const { userId } = useContext(AuthContext);
     const classes = useStyles();
     const [toggleCreateNote, setToggleCreateNote] = useState(false);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [isPinned, toggleIsPinned] = useState(false);
+    const [notify, setNotify] = useState({
+        isOpen: false,
+        message: "",
+        type: "",
+    });
     const toggleAccordian = () => {
         setToggleCreateNote(!toggleCreateNote ? true : true);
     }
     const closeAccordian = () => {
         setToggleCreateNote(!toggleCreateNote);
     }
-    const closeIfOpenAccordian = () => {
-        setToggleCreateNote(toggleCreateNote ? false : false);
-    }
-    /**
- * Hook that alerts clicks outside of the passed ref
- */
-    function useOutsideAlerter(ref) {
-        useEffect(() => {
-            /**
-             * Alert if clicked on outside of element
-             */
-            function handleClickOutside(event) {
-                if (ref.current && !ref.current.contains(event.target)) {
-                    closeIfOpenAccordian();
-                }
-            }
-            // Bind the event listener
-            document.addEventListener("mousedown", handleClickOutside);
-            return () => {
-                // Unbind the event listener on clean up
-                document.removeEventListener("mousedown", handleClickOutside);
+    const handleClickAway = () => {
+        if (title !== '' && description !== '') {
+            const noteData = {
+                title,
+                description,
+                isPinned,
+                userId,
             };
-        }, [ref]);
+            createNote(noteData).then((res) => {
+                if (res.data.success === true) {
+                    setNotify({
+                        isOpen: true,
+                        message: "Note created Successfully",
+                        type: "success",
+                    });
+                    history.push("/findNotes/all");
+                } else {
+                    setNotify({
+                        isOpen: true,
+                        message: "Something went wrong",
+                        type: "error",
+                    });
+                }
+            })
+                .catch((error) => {
+                    let message;
+                    if (error.message.includes("500")) {
+                        message = "Error occured while creating note";
+                    }
+                    else if ((error.message.includes("400"))) {
+                        message = "Invalid input";
+                    }
+                    else {
+                        message = "Something went wrong";
+                    }
+                    setNotify({
+                        isOpen: true,
+                        message: message,
+                        type: "error",
+                    });
+                });
+            setToggleCreateNote(toggleCreateNote ? false : false);
+            setTitle("");
+            setDescription("");
+            toggleIsPinned(false);
+        }
     }
+    const syncTitle = (title) => {
+        setTitle(title);
+    }
+    const syncDescription = (description) => {
+        setDescription(description);
+    }
+    const syncIsPinned = () => {
+        toggleIsPinned(!isPinned)
+    }
+
     return (
-        <div ref={wrapperRef} className="create-note-container">
-            {toggleCreateNote && <React.Fragment><div className="pin-note"></div>
-                <TextField id="title-input" placeholder="Title" fullWidth InputProps={{ classes, disableUnderline: true }} /></React.Fragment>}
-            <TextField id="desc-input" placeholder="Take a note..." fullWidth
-                InputProps={{ classes, disableUnderline: true }} onClick={toggleAccordian} />
-            {toggleCreateNote && <div className="create-note-bottom-panel">
-                <button className="close-create-note" onClick={closeAccordian}>Close</button>
-            </div>}
-        </div>
+        <ClickAwayListener onClickAway={handleClickAway}>
+            <div className="create-note-container">
+                {toggleCreateNote && <React.Fragment><div className={isPinned ? "pin-note pin" : "pin-note"} onClick={syncIsPinned}></div>
+                    <TextField id="title-input" placeholder="Title" fullWidth
+                        onChange={(event) => syncTitle(event.target.value)} name="title" value={title}
+                        InputProps={{ classes, disableUnderline: true }} /></React.Fragment>}
+                <TextField id="desc-input" placeholder="Take a note..." fullWidth onChange={(event) => syncDescription(event.target.value)}
+                    name="description" value={description}
+                    InputProps={{ classes, disableUnderline: true }} onClick={toggleAccordian} />
+                {toggleCreateNote && <div className="create-note-bottom-panel">
+                    <button className="close-create-note" onClick={closeAccordian}>Close</button>
+                </div>}
+                <Notification notify={notify} setNotify={setNotify} />
+            </div>
+        </ClickAwayListener>
     );
 }

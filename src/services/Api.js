@@ -19,5 +19,8 @@ export const findTrashedNotes = (userId) => {
 export const findArchivedNotes = (userId) => {
     return axios.post("/findNotes/archive", { userId: userId });
 }
+export const createNote = (noteData) => {
+    return axios.post("/notes", noteData);
+}
 
 
