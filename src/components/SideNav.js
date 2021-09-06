@@ -18,11 +18,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import NoteIcon from '@material-ui/icons/Note';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArchiveIcon from '@material-ui/icons/Archive';
-import CardList from "./CardList";
+import CardList from "./card/CardList";
 import { AuthContext } from "../context/AuthContext";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Notification from "../components/Notification";
-import CreateNote from "./CreateNote";
+import CreateNote from "./createNote/CreateNote";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -98,6 +98,7 @@ export default function SideNav(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = useState(false);
+    const [menuSelected, setMenuSelected] = useState("Notes");
     const [showCreateNote, setShowCreateNote] = useState(true);
     const [notify, setNotify] = useState({
         isOpen: false,
@@ -107,14 +108,17 @@ export default function SideNav(props) {
     const getAllNotes = () => {
         props.callback("all");
         setShowCreateNote(true);
+        setMenuSelected("Notes");
     };
     const getArchivedNotes = () => {
         props.callback("archive");
         setShowCreateNote(false);
+        setMenuSelected("Archive");
     };
     const getTrashedNotes = () => {
         props.callback("trash");
         setShowCreateNote(false);
+        setMenuSelected("Trash");
     };
     const primaryMenuItems = [
         { name: "Notes", icon: <NoteIcon />, action: getAllNotes },
@@ -185,7 +189,8 @@ export default function SideNav(props) {
                 <Divider />
                 <List>
                     {primaryMenuItems.map((item) => (
-                        <ListItem button key={item.name} onClick={item.action}>
+                        <ListItem button key={item.name} onClick={item.action}
+                            className={item.name === menuSelected ? "menu-selected" : ""}>
                             <ListItemIcon>{item.icon}</ListItemIcon>
                             <ListItemText primary={item.name} />
                         </ListItem>
@@ -194,7 +199,8 @@ export default function SideNav(props) {
                 <Divider />
                 <List>
                     {secondaryMenuItems.map((item) => (
-                        <ListItem button key={item.name} onClick={item.action}>
+                        <ListItem button key={item.name} onClick={item.action}
+                            className={item.name === menuSelected ? "menu-selected" : ""}>
                             <ListItemIcon>{item.icon}</ListItemIcon>
                             <ListItemText primary={item.name} />
                         </ListItem>

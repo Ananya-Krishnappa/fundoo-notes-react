@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import Login from "../pages/Login";
 import { authConsumer } from "./AuthConsumer";
-import Dashboard from "../components/Dashboard";
+import Dashboard from "../components/dashboard/Dashboard";
 import { Header } from "../components/Header";
 export const Authorization = authConsumer(class extends Component {
     render() {
