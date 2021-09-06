@@ -22,5 +22,8 @@ export const findArchivedNotes = (userId) => {
 export const createNote = (noteData) => {
     return axios.post("/notes", noteData);
 }
+export const updateNote = (noteId, noteData) => {
+    return axios.put(`/notes/${noteId}`, noteData);
+}
 
 

@@ -29,15 +29,7 @@ export default function Dashboard(props) {
   }
   const getNotesError = (error) => {
     let message;
-    if (error.message.includes("500")) {
-      message = "Error while retrieving the notes";
-    }
-    else if ((error.message.includes("400"))) {
-      message = "Bad request";
-    }
-    else {
-      message = error.response && error.response.data.message;
-    }
+    message = error.response && error.response.data.message;
     setNotify({
       isOpen: true,
       message: message,
