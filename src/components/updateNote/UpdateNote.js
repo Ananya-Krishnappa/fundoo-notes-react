@@ -10,6 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import { ClickAwayListener } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
+import "./UpdateNote.scss";
 const styles = (theme) => ({
     root: {
         margin: 0,
@@ -63,29 +64,29 @@ export default function UpdateNote(props) {
         setNote(props.note);
     });
     const handleClickAway = () => {
-        console.log("click away", note);
+        props.handleClickAwayCallback(note);
     }
     const syncTitle = (title) => {
-        setNote({ ...note, title });
+        setNote(note.title = title);
     }
     const syncDescription = (description) => {
-        setNote({ ...note, description });
+        setNote(note.description = description);
     }
     const syncIsPinned = () => {
-        setNote({ ...note, isPinned: !note.isPinned });
+        setNote(note.isPinned = !note.isPinned);
     }
     return (
-        <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={props.isModalOpen}>
+        <Dialog onClose={handleClose} className="update-note-modal" aria-labelledby="customized-dialog-title" open={props.isModalOpen}>
             <ClickAwayListener onClickAway={handleClickAway}>
                 <div>
                     <DialogContent dividers>
-                        <div className="create-note-container">
+                        <div className="update-note-container">
                             <React.Fragment><div className={note.isPinned ? "pin-note pin" : "pin-note"}
                                 onClick={syncIsPinned}></div>
-                                <TextField autoComplete="off" id="title-input" placeholder="Title" fullWidth
+                                <TextField className="update-title" autoComplete="off" id="title-input" placeholder="Title" fullWidth
                                     onChange={(event) => syncTitle(event.target.value)} name="title" value={note.title}
                                     InputProps={{ disableUnderline: true }} /></React.Fragment>
-                            <TextField autoComplete="off" id="desc-input" placeholder="Take a note..." fullWidth
+                            <TextField className="update-desc" autoComplete="off" id="desc-input" placeholder="Take a note..." fullWidth
                                 onChange={(event) => syncDescription(event.target.value)}
                                 name="description" value={note.description}
                                 InputProps={{ disableUnderline: true }} />

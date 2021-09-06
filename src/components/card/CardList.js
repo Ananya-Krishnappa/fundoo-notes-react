@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -7,6 +7,9 @@ import clsx from 'clsx';
 import "./CardList.scss";
 import Grid from '@material-ui/core/Grid';
 import UpdateNote from "../updateNote/UpdateNote";
+import { AuthContext } from "../../context/AuthContext";
+import { updateNote } from "../../services/Api";
+import Notification from "../Notification";
 const useStyles = makeStyles({
     root: {
         minWidth: 275,
@@ -25,7 +28,13 @@ const useStyles = makeStyles({
     },
 });
 export default function CardList(props) {
+    const { userId } = useContext(AuthContext);
     const classes = useStyles();
+    const [notify, setNotify] = useState({
+        isOpen: false,
+        message: "",
+        type: "",
+    });
     const [open, setOpen] = useState(false);
     const [note, setNote] = useState({});
     const handleClickOpen = (event, updateNote) => {
@@ -35,6 +44,37 @@ export default function CardList(props) {
     const handleClose = (noteData) => {
         setOpen(false);
     };
+    const handleClickAway = (noteData) => {
+        setOpen(false);
+        const updateNoteBody = {
+            userId, title: noteData.title, description: noteData.description, isPinned: noteData.isPinned
+        };
+        updateNote(noteData._id, updateNoteBody).then((res) => {
+            updateNotesSuccess(res);
+        }).catch((error) => {
+            updateNotesError(error);
+        });;
+    };
+    const updateNotesSuccess = (res) => {
+        if (res.data.success === true) {
+            setNote(res.data.data);
+        } else {
+            setNotify({
+                isOpen: true,
+                message: res.message,
+                type: "error",
+            });
+        }
+    }
+    const updateNotesError = (error) => {
+        let message;
+        message = error.response && error.response.data.message;
+        setNotify({
+            isOpen: true,
+            message: message,
+            type: "error",
+        });
+    }
     return (
         <div className="note-list-container">
             <Grid container className={classes.root}>
@@ -46,6 +86,7 @@ export default function CardList(props) {
                                     <Grid key={index} item xs={12} sm={6} md={4} lg={4}>
                                         <Card className={clsx(classes.root, "note-card")} onClick={(event) => handleClickOpen(event, note)}>
                                             <CardContent>
+                                                <div className={note.isPinned ? "pin-note pin" : "pin-note"}></div>
                                                 <Typography className={classes.title} color="textSecondary" gutterBottom>
                                                     {note.title}
                                                 </Typography>
@@ -61,7 +102,9 @@ export default function CardList(props) {
                     </Grid>
                 </Grid>
             </Grid>
-            <UpdateNote isModalOpen={open} handleCloseCallback={handleClose} note={note}></UpdateNote>
+            <UpdateNote isModalOpen={open} handleCloseCallback={handleClose}
+                handleClickAwayCallback={handleClickAway} note={note}></UpdateNote>
+            <Notification notify={notify} setNotify={setNotify} />
         </div>
     );
 }
