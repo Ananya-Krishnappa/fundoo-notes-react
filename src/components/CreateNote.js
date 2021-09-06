@@ -36,6 +36,7 @@ export default function CreateNote(props) {
     }
     const handleClickAway = () => {
         if (title !== '' && description !== '') {
+            setToggleCreateNote(toggleCreateNote ? false : false);
             const noteData = {
                 title,
                 description,
@@ -49,7 +50,7 @@ export default function CreateNote(props) {
                         message: "Note created Successfully",
                         type: "success",
                     });
-                    history.push("/findNotes/all");
+                    props.updateNoteCallback();
                 } else {
                     setNotify({
                         isOpen: true,
@@ -75,11 +76,10 @@ export default function CreateNote(props) {
                         type: "error",
                     });
                 });
-                setTitle("");
-                setDescription("");
-                toggleIsPinned(false);
-            }
-            setToggleCreateNote(toggleCreateNote ? false : false);
+            setTitle("");
+            setDescription("");
+            toggleIsPinned(false);
+        }
     }
     const syncTitle = (title) => {
         setTitle(title);
@@ -95,10 +95,10 @@ export default function CreateNote(props) {
         <ClickAwayListener onClickAway={handleClickAway}>
             <div className="create-note-container">
                 {toggleCreateNote && <React.Fragment><div className={isPinned ? "pin-note pin" : "pin-note"} onClick={syncIsPinned}></div>
-                    <TextField id="title-input" placeholder="Title" fullWidth
+                    <TextField autoComplete="off" id="title-input" placeholder="Title" fullWidth
                         onChange={(event) => syncTitle(event.target.value)} name="title" value={title}
                         InputProps={{ classes, disableUnderline: true }} /></React.Fragment>}
-                <TextField id="desc-input" placeholder="Take a note..." fullWidth onChange={(event) => syncDescription(event.target.value)}
+                <TextField autoComplete="off" id="desc-input" placeholder="Take a note..." fullWidth onChange={(event) => syncDescription(event.target.value)}
                     name="description" value={description}
                     InputProps={{ classes, disableUnderline: true }} onClick={toggleAccordian} />
                 {toggleCreateNote && <div className="create-note-bottom-panel">

@@ -22,7 +22,6 @@ import CardList from "./CardList";
 import { AuthContext } from "../context/AuthContext";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Notification from "../components/Notification";
-import { useHistory } from "react-router";
 import CreateNote from "./CreateNote";
 const drawerWidth = 240;
 
@@ -95,27 +94,27 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SideNav(props) {
-    const history = useHistory();
     const { signout, userId } = useContext(AuthContext);
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = useState(false);
+    const [showCreateNote, setShowCreateNote] = useState(true);
     const [notify, setNotify] = useState({
         isOpen: false,
         message: "",
         type: "",
     });
     const getAllNotes = () => {
-        history.push("/fundoo/notes/all");
         props.callback("all");
+        setShowCreateNote(true);
     };
     const getArchivedNotes = () => {
-        history.push("/fundoo/notes/archive");
         props.callback("archive");
+        setShowCreateNote(false);
     };
     const getTrashedNotes = () => {
-        history.push("/fundoo/notes/trash");
         props.callback("trash");
+        setShowCreateNote(false);
     };
     const primaryMenuItems = [
         { name: "Notes", icon: <NoteIcon />, action: getAllNotes },
@@ -131,9 +130,6 @@ export default function SideNav(props) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-    const saveNote = (noteData) => {
-        console.log(noteData);
-    }
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -207,8 +203,8 @@ export default function SideNav(props) {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <CreateNote></CreateNote>
-                <CardList notes={props.notes}></CardList>
+                {showCreateNote && <CreateNote updateNoteCallback={getAllNotes}></CreateNote>}
+                <CardList notes={props.notes} ></CardList>
             </main>
             <Notification notify={notify} setNotify={setNotify} />
         </div>
