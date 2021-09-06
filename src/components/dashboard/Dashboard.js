@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Dashboard.css";
-import SideNav from "./SideNav";
-import { findAllNotes, findTrashedNotes, findArchivedNotes } from "../services/Api";
-import { AuthContext } from "../context/AuthContext";
-import Notification from "./Notification";
+import SideNav from "../SideNav";
+import { findAllNotes, findTrashedNotes, findArchivedNotes } from "../../services/Api";
+import { AuthContext } from "../../context/AuthContext";
+import Notification from "../Notification";
 
 export default function Dashboard(props) {
   const [notes, setNotes] = useState([]);

@@ -3,9 +3,9 @@ import "./CreateNote.scss";
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { ClickAwayListener } from '@material-ui/core';
-import { createNote } from "../services/Api";
-import { AuthContext } from "../context/AuthContext";
-import Notification from "../components/Notification";
+import { createNote } from "../../services/Api";
+import { AuthContext } from "../../context/AuthContext";
+import Notification from "../Notification";
 import { useHistory } from "react-router";
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,8 +35,8 @@ export default function CreateNote(props) {
         setToggleCreateNote(!toggleCreateNote);
     }
     const handleClickAway = () => {
+        setToggleCreateNote(toggleCreateNote ? false : false);
         if (title !== '' && description !== '') {
-            setToggleCreateNote(toggleCreateNote ? false : false);
             const noteData = {
                 title,
                 description,
