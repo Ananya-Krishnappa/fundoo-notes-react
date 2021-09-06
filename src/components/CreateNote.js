@@ -75,11 +75,11 @@ export default function CreateNote(props) {
                         type: "error",
                     });
                 });
+                setTitle("");
+                setDescription("");
+                toggleIsPinned(false);
+            }
             setToggleCreateNote(toggleCreateNote ? false : false);
-            setTitle("");
-            setDescription("");
-            toggleIsPinned(false);
-        }
     }
     const syncTitle = (title) => {
         setTitle(title);
