@@ -6,6 +6,7 @@ import { AuthContext } from "../../context/AuthContext";
 import Notification from "../Notification";
 
 export default function Dashboard(props) {
+  const { userId } = useContext(AuthContext);
   const [notes, setNotes] = useState([]);
   const [notify, setNotify] = useState({
     isOpen: false,
@@ -15,7 +16,6 @@ export default function Dashboard(props) {
   useEffect(() => {
     findNotes("all");
   }, []);
-  const { userId } = useContext(AuthContext);
   const getNotesSuccess = (res) => {
     if (res.data.success === true) {
       setNotes(res.data.data);

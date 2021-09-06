@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import "./CardList.scss";
 import Grid from '@material-ui/core/Grid';
+import UpdateNote from "../updateNote/UpdateNote";
 const useStyles = makeStyles({
     root: {
         minWidth: 275,
@@ -25,8 +24,17 @@ const useStyles = makeStyles({
         marginBottom: 12,
     },
 });
-export default function Dashboard(props) {
+export default function CardList(props) {
     const classes = useStyles();
+    const [open, setOpen] = useState(false);
+    const [note, setNote] = useState({});
+    const handleClickOpen = (event, updateNote) => {
+        setOpen(true);
+        setNote(updateNote);
+    };
+    const handleClose = (noteData) => {
+        setOpen(false);
+    };
     return (
         <div className="note-list-container">
             <Grid container className={classes.root}>
@@ -36,7 +44,7 @@ export default function Dashboard(props) {
                             props.notes !== undefined && props.notes.map((note, index) => {
                                 return (
                                     <Grid key={index} item xs={12} sm={6} md={4} lg={4}>
-                                        <Card className={clsx(classes.root, "note-card")}>
+                                        <Card className={clsx(classes.root, "note-card")} onClick={(event) => handleClickOpen(event, note)}>
                                             <CardContent>
                                                 <Typography className={classes.title} color="textSecondary" gutterBottom>
                                                     {note.title}
@@ -45,9 +53,6 @@ export default function Dashboard(props) {
                                                     {note.description}
                                                 </Typography>
                                             </CardContent>
-                                            <CardActions>
-                                                <Button size="small">Learn More</Button>
-                                            </CardActions>
                                         </Card>
                                     </Grid>
                                 );
@@ -56,6 +61,7 @@ export default function Dashboard(props) {
                     </Grid>
                 </Grid>
             </Grid>
+            <UpdateNote isModalOpen={open} handleCloseCallback={handleClose} note={note}></UpdateNote>
         </div>
     );
 }

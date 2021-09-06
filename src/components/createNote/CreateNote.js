@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 export default function CreateNote(props) {
-    const history = useHistory();
     const { userId } = useContext(AuthContext);
     const classes = useStyles();
     const [toggleCreateNote, setToggleCreateNote] = useState(false);
