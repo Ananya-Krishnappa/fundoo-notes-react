@@ -32,3 +32,10 @@
     opacity: 0.87;
     background-color: rgba(95,99,104,0.157);
 }
+.card-action-panel{
+    position: absolute;
+    bottom: 0;
+}
+.display-card-action{
+    display: none !important;
+}

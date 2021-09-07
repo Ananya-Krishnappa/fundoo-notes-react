@@ -47,7 +47,7 @@ export default function CreateNote(props) {
                     message: "Note created Successfully",
                     type: "success",
                 });
-                props.updateNoteCallback();
+                props.createNoteCallback();
             })
                 .catch((error) => {
                     let message;

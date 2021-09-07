@@ -209,8 +209,8 @@ export default function SideNav(props) {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                {showCreateNote && <CreateNote updateNoteCallback={getAllNotes}></CreateNote>}
-                <CardList notes={props.notes} ></CardList>
+                {showCreateNote && <CreateNote createNoteCallback={getAllNotes}></CreateNote>}
+                <CardList notes={props.notes} updateNotesCallback={getAllNotes}></CardList>
             </main>
             <Notification notify={notify} setNotify={setNotify} />
         </div>
