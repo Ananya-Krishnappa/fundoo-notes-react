@@ -39,3 +39,13 @@
 .display-card-action{
     display: none !important;
 }
+.menu-list {
+    border-width: 0;
+    .MuiPopover-paper{
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        box-shadow: none;
+    }
+}
+.note-list-container {
+    margin: 0 0 20px 0;
+}
