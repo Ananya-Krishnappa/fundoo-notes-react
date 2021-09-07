@@ -25,5 +25,15 @@ export const createNote = (noteData) => {
 export const updateNote = (noteId, noteData) => {
     return axios.put(`/notes/${noteId}`, noteData);
 }
+export const pinNote = (noteId, noteData) => {
+    return axios.put(`/pinNote/${noteId}`, noteData);
+}
+export const archiveNote = (noteId, noteData) => {
+    return axios.put(`/archiveNote/${noteId}`, noteData);
+}
+export const trashNote = (noteId, noteData) => {
+    return axios.put(`/trashNote/${noteId}`, noteData);
+}
+
 
 
