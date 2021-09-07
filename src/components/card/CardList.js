@@ -56,15 +56,7 @@ export default function CardList(props) {
         });;
     };
     const updateNotesSuccess = (res) => {
-        if (res.data.success === true) {
-            setNote(res.data.data);
-        } else {
-            setNotify({
-                isOpen: true,
-                message: res.message,
-                type: "error",
-            });
-        }
+        setNote(res.data.data);
     }
     const updateNotesError = (error) => {
         let message;
@@ -79,7 +71,7 @@ export default function CardList(props) {
         <div className="note-list-container">
             <Grid container className={classes.root}>
                 <Grid item xs={12}>
-                    <Grid container justifyContent="center" xs={12} >
+                    <Grid container justifyContent="center" item xs={12} >
                         {
                             props.notes !== undefined && props.notes.map((note, index) => {
                                 return (
