@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import "./CreateNote.scss";
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -6,7 +6,6 @@ import { ClickAwayListener } from '@material-ui/core';
 import { createNote } from "../../services/Api";
 import { AuthContext } from "../../context/AuthContext";
 import Notification from "../Notification";
-import { useHistory } from "react-router";
 const useStyles = makeStyles((theme) => ({
     root: {
         '& > *': {
@@ -35,7 +34,7 @@ export default function CreateNote(props) {
     }
     const handleClickAway = () => {
         setToggleCreateNote(toggleCreateNote ? false : false);
-        if (title !== '' && description !== '') {
+        if (title.trim() !== '' && description.trim() !== '') {
             const noteData = {
                 title,
                 description,
@@ -43,42 +42,26 @@ export default function CreateNote(props) {
                 userId,
             };
             createNote(noteData).then((res) => {
-                if (res.data.success === true) {
-                    setNotify({
-                        isOpen: true,
-                        message: "Note created Successfully",
-                        type: "success",
-                    });
-                    props.updateNoteCallback();
-                } else {
-                    setNotify({
-                        isOpen: true,
-                        message: "Something went wrong",
-                        type: "error",
-                    });
-                }
+                setNotify({
+                    isOpen: true,
+                    message: "Note created Successfully",
+                    type: "success",
+                });
+                props.updateNoteCallback();
             })
                 .catch((error) => {
                     let message;
-                    if (error.message.includes("500")) {
-                        message = "Error occured while creating note";
-                    }
-                    else if ((error.message.includes("400"))) {
-                        message = "Invalid input";
-                    }
-                    else {
-                        message = "Something went wrong";
-                    }
+                    message = error.response && error.response.data.message;
                     setNotify({
                         isOpen: true,
                         message: message,
                         type: "error",
                     });
                 });
-            setTitle("");
-            setDescription("");
-            toggleIsPinned(false);
         }
+        setTitle("");
+        setDescription("");
+        toggleIsPinned(false);
     }
     const syncTitle = (title) => {
         setTitle(title);
