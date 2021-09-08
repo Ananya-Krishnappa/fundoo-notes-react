@@ -13,6 +13,10 @@ import "../global/styles.scss";
 import { useHistory } from "react-router-dom";
 import { Header } from "../components/Header";
 import { forgotPassword } from "../services/Api";
+/**
+ * @description ForgotPassword functional component to return ForgotPassword Page
+ * @return ForgotPassword page component
+ */
 const ForgotPassword = () => {
     const history = useHistory();
     const [notify, setNotify] = useState({

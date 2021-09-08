@@ -14,6 +14,11 @@ import { useHistory } from "react-router";
 import Notification from "../components/Notification";
 import { getTitle } from "../components/Title";
 import { AuthContext } from "../context/AuthContext";
+
+/**
+ * @description Login functional component to return Login Page
+ * @return Login page component
+ */
 const Login = () => {
   const { authenticate } = useContext(AuthContext);
   const history = useHistory();
@@ -26,7 +31,10 @@ const Login = () => {
     email: "",
     password: "",
   };
-
+  /**
+   * @description Validation Schema using YUP
+   * @return Error if validation fails
+   */
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Please enter valid email").required("Required"),
     password: Yup.string().required("Required").matches(

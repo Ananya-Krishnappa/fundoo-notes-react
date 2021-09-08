@@ -34,6 +34,9 @@ export const archiveNote = (noteId, noteData) => {
 export const trashNote = (noteId, noteData) => {
     return axios.put(`/trashNote/${noteId}`, noteData);
 }
+export const deleteNoteForever = (noteId, noteData) => {
+    return axios.delete(`/notes/${noteId}`, noteData);
+}
 
 
 

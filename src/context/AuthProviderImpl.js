@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import Axios from "axios";
 import { AuthContext } from "./AuthContext";
 import { authUrl } from "../store/Urls";
-export class AuthProviderImpl extends Component {
+import { withRouter } from "react-router-dom";
+class AuthProviderImpl extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -26,7 +27,8 @@ export class AuthProviderImpl extends Component {
         })
     }
     signout = () => {
-        this.setState({ isAuthenticated: false, webToken: null });
+        this.setState({ isAuthenticated: false, webToken: null, userId: null });
+        this.props.history.push("/fundoo");
     }
     render = () =>
         <AuthContext.Provider value={{
@@ -35,4 +37,5 @@ export class AuthProviderImpl extends Component {
         }}>
             {this.props.children}
         </AuthContext.Provider>
-}
+};
+export default withRouter(AuthProviderImpl);
