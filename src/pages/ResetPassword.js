@@ -13,6 +13,10 @@ import "../global/styles.scss";
 import { useHistory, useLocation } from "react-router-dom";
 import { Header } from "../components/Header";
 import { resetPassword } from "../services/Api";
+/**
+ * @description ResetPassword functional component to return ResetPassword Page
+ * @return ResetPassword page component
+ */
 const ResetPassword = () => {
     let location = useLocation();
     const history = useHistory();

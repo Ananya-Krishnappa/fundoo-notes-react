@@ -1,67 +1,50 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import "./Dashboard.css";
 import SideNav from "../SideNav";
-import { findAllNotes, findTrashedNotes, findArchivedNotes } from "../../services/Api";
-import { AuthContext } from "../../context/AuthContext";
-import Notification from "../Notification";
-
+import { makeStyles } from '@material-ui/core/styles';
+import { Route, Redirect, Switch } from "react-router-dom";
+import ArchiveNote from "../archiveNote/ArchiveNote";
+import TrashNote from "../trashNote/TrashNote";
+import AllNote from "../allNote/AllNote";
+const useStyles = makeStyles((theme) => ({
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
+}));
+/**
+ * @description dashboard functional component 
+ */
 export default function Dashboard(props) {
-  const { userId } = useContext(AuthContext);
-  const [notes, setNotes] = useState([]);
-  const [notify, setNotify] = useState({
-    isOpen: false,
-    message: "",
-    type: "",
-  });
-  useEffect(() => {
-    findNotes("all");
-  }, []);
-  const getNotesSuccess = (res) => {
-    if (res.data.success === true) {
-      setNotes(res.data.data);
-    } else {
-      setNotify({
-        isOpen: true,
-        message: res.message,
-        type: "error",
-      });
-    }
-  }
-  const getNotesError = (error) => {
-    let message;
-    message = error.response && error.response.data.message;
-    setNotify({
-      isOpen: true,
-      message: message,
-      type: "error",
-    });
-  }
-  const findNotes = (status) => {
-    if (status === "trash") {
-      findTrashedNotes(userId).then((res) => {
-        getNotesSuccess(res);
-      }).catch((error) => {
-        getNotesError(error);
-      });
-    } else if (status === "archive") {
-      findArchivedNotes(userId).then((res) => {
-        getNotesSuccess(res);
-      }).catch((error) => {
-        getNotesError(error);
-      });
-    } else {
-      findAllNotes(userId).then((res) => {
-        getNotesSuccess(res);
-      }).catch((error) => {
-        getNotesError(error);
-      });
-    }
-  }
+  const classes = useStyles();
   return (
     <div>
       <div className="container-fluid">
-        <SideNav callback={findNotes} notes={notes}></SideNav>
-        <Notification notify={notify} setNotify={setNotify} />
+        <SideNav>
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
+            <Switch>
+              <Route path="/fundoo/notes" render={(props) => (
+                <AllNote />
+              )} />
+              <Route path="/fundoo/archive" render={(props) => (
+                <ArchiveNote />
+              )} />
+              <Route path="/fundoo/trash" render={(props) => (
+                <TrashNote />
+              )} />
+              <Redirect to="/fundoo/notes" />
+            </Switch>
+          </main>
+        </SideNav>
       </div>
     </div>
   );

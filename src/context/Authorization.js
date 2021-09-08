@@ -18,7 +18,9 @@ export const Authorization = authConsumer(class extends Component {
                             !this.props.isAuthenticated &&
                             <Route component={Login} />
                         }
-                        <Route path="/fundoo/notes" component={Dashboard} />
+                        <Route path="/fundoo/:status" render={(props) => (
+                            <Dashboard {...props} />
+                        )} />
                         <Redirect to="/fundoo/notes" />
                     </Switch>
                 </div>

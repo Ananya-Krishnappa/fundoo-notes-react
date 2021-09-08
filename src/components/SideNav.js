@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useHistory } from "react-router-dom";
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -18,11 +19,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import NoteIcon from '@material-ui/icons/Note';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArchiveIcon from '@material-ui/icons/Archive';
-import CardList from "./card/CardList";
 import { AuthContext } from "../context/AuthContext";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Notification from "../components/Notification";
-import CreateNote from "./createNote/CreateNote";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -93,32 +92,42 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+/**
+ * @description sideNav functional component with notes,archive and trash
+ * @return sideNavigation bar
+ */
 export default function SideNav(props) {
-    const { signout, userId } = useContext(AuthContext);
+    const history = useHistory();
+    const { signout } = useContext(AuthContext);
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = useState(false);
     const [menuSelected, setMenuSelected] = useState("Notes");
-    const [showCreateNote, setShowCreateNote] = useState(true);
     const [notify, setNotify] = useState({
         isOpen: false,
         message: "",
         type: "",
     });
+    /**
+    * @description Function to retrieve all notes
+    */
     const getAllNotes = () => {
-        props.callback("all");
-        setShowCreateNote(true);
         setMenuSelected("Notes");
+        history.push("/fundoo/notes");
     };
+    /**
+    * @description Function to retrieve all archive notes
+    */
     const getArchivedNotes = () => {
-        props.callback("archive");
-        setShowCreateNote(false);
         setMenuSelected("Archive");
+        history.push("/fundoo/archive");
     };
+    /**
+    * @description Function to retrieve all trashed notes
+    */
     const getTrashedNotes = () => {
-        props.callback("trash");
-        setShowCreateNote(false);
         setMenuSelected("Trash");
+        history.push("/fundoo/trash");
     };
     const primaryMenuItems = [
         { name: "Notes", icon: <NoteIcon />, action: getAllNotes },
@@ -130,7 +139,9 @@ export default function SideNav(props) {
     const handleDrawerOpen = () => {
         setOpen(true);
     };
-
+    /**
+     * @description Function to handle drawer close
+     */
     const handleDrawerClose = () => {
         setOpen(false);
     };
@@ -207,11 +218,7 @@ export default function SideNav(props) {
                     ))}
                 </List>
             </Drawer>
-            <main className={classes.content}>
-                <div className={classes.toolbar} />
-                {showCreateNote && <CreateNote createNoteCallback={getAllNotes}></CreateNote>}
-                <CardList notes={props.notes} updateNotesCallback={getAllNotes}></CardList>
-            </main>
+            {props.children}
             <Notification notify={notify} setNotify={setNotify} />
         </div>
     );

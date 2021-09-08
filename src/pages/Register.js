@@ -15,6 +15,11 @@ import "../global/styles.scss";
 import { useHistory } from "react-router-dom";
 import { Header } from "../components/Header";
 import { register } from "../services/Api";
+
+/**
+ * @description Register functional component to return Register Page
+ * @return Register page component
+ */
 const Register = () => {
     const history = useHistory();
     const [notify, setNotify] = useState({
@@ -29,7 +34,10 @@ const Register = () => {
         password: "",
         confirmPassword: "",
     };
-
+    /**
+    * @description Validation Schema using YUP
+    * @return Error if validation fails
+    */
     const validationSchema = Yup.object().shape({
         firstName: Yup.string().min(2).required("Required").matches(/^([a-zA-Z]+[,.]?[ ]?|[a-zA-Z]+['-]?)+$/, "Enter Valid Firstname"),
         lastName: Yup.string().min(1).required("Required").matches(/^([a-zA-Z]{1,})+$/, "Enter Valid Lastname"),
@@ -43,7 +51,10 @@ const Register = () => {
             "Passwords must match"
         ),
     });
-
+    /**
+     * @description Handle Onsubmit-> Intigrates the data object with backend when Services API is called
+     * @params takes input as values and props
+     */
     const onSubmit = (values, props) => {
         if (values) {
             const userData = {

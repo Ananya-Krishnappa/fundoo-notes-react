@@ -3,7 +3,7 @@ import { NotesDataStore } from "./store/DataStore";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch, Redirect }
     from "react-router-dom";
-import { AuthProviderImpl } from "./context/AuthProviderImpl";
+import AuthProviderImpl from "./context/AuthProviderImpl";
 import { Authorization } from "./context/Authorization";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -12,8 +12,8 @@ import "./App.css";
 export class App extends Component {
     render() {
         return <Provider store={NotesDataStore}>
-            <AuthProviderImpl>
-                <Router>
+            <Router>
+                <AuthProviderImpl>
                     <Switch>
                         <Route path="/fundoo" render={
                             routeProps =>
@@ -24,8 +24,8 @@ export class App extends Component {
                         <Route path="/resetPassword" component={ResetPassword} />
                         <Redirect to="/fundoo" />
                     </Switch>
-                </Router>
-            </AuthProviderImpl>
+                </AuthProviderImpl>
+            </Router>
         </Provider>
     }
 }
