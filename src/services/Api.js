@@ -37,6 +37,12 @@ export const trashNote = (noteId, noteData) => {
 export const deleteNoteForever = (noteId, noteData) => {
     return axios.delete(`/notes/${noteId}`, noteData);
 }
+export const createLabel = (labelData) => {
+    return axios.post("/label", labelData);
+}
+export const findAllLabel = () => {
+    return axios.get("/label");
+}
 
 
 
