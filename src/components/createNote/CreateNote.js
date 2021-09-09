@@ -27,7 +27,6 @@ export default function CreateNote(props) {
     const [showCreateLabel, setShowCreateLabel] = useState(false);
     const [labelName, setLabelName] = useState("");
     const [labelList, setLabelList] = useState([]);
-    const [selectedLabel, setSelectedLabel] = useState([]);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [isPinned, toggleIsPinned] = useState(false);
@@ -61,11 +60,25 @@ export default function CreateNote(props) {
         setAnchorEl(null);
         setAnchorElAddLabel(event.currentTarget);
         event.stopPropagation();
-        findAllLabelFunc();
+        labelList.length === 0 && findAllLabelFunc();
     }
-    const findAllLabelFunc = (updateChecked) => {
+    const findAllLabelFunc = (defaultChecked, id) => {
         findAllLabel().then((res) => {
-            setLabelList(res.data.data);
+            if (defaultChecked) {
+                let newLabel = res.data.data.filter(ele => {
+                    if (ele._id === id) {
+                        ele.checked = true;
+                        return ele;
+                    }
+                });
+                setLabelList([...labelList, newLabel[0]]);
+            } else {
+                let allLabels = res.data.data.map(ele => {
+                    ele.checked = false;
+                    return ele;
+                });
+                setLabelList(allLabels);
+            }
         })
             .catch((error) => {
                 let message;
@@ -115,6 +128,7 @@ export default function CreateNote(props) {
         toggleIsPinned(false);
         setLabelName("");
         setShowCreateLabel(false);
+        setLabelList([]);
     }
     const syncLabelName = (event) => {
         if (event.target.value.trim() !== "") {
@@ -143,8 +157,7 @@ export default function CreateNote(props) {
             });
             setLabelName("");
             setShowCreateLabel(false);
-            setSelectedLabel([...selectedLabel, { labelId: res.data.data._id, labelName: res.data.data.labelName }]);
-            findAllLabelFunc();
+            findAllLabelFunc(true, res.data.data._id);
         })
             .catch((error) => {
                 let message;
@@ -158,17 +171,34 @@ export default function CreateNote(props) {
     }
     const handleLabelCheckboxChange = (event, label) => {
         if (event.target.checked) {
-            setSelectedLabel([...selectedLabel, { labelId: label._id, labelName: label.labelName }]);
+            let allLabels = labelList.map(ele => {
+                if (ele._id === label._id) {
+                    ele.checked = true;
+                    return ele;
+                }
+                return ele;
+            });
+            setLabelList(allLabels);
         } else {
-            setSelectedLabel(selectedLabel.filter(l => {
-                return l.labelId !== label._id
-            }));
+            let allLabels = labelList.map(ele => {
+                if (ele._id === label._id) {
+                    ele.checked = false;
+                    return ele;
+                }
+                return ele;
+            });
+            setLabelList(allLabels);
         }
     }
     const handleLabelDelete = (event, label) => {
-        setSelectedLabel(selectedLabel.filter(l => {
-            return l.labelId !== label.labelId
-        }));
+        let allLabels = labelList.map(ele => {
+            if (ele._id === label._id) {
+                ele.checked = false;
+                return ele;
+            }
+            return ele;
+        });
+        setLabelList(allLabels);
         event.stopPropagation();
     }
     return (
@@ -181,8 +211,8 @@ export default function CreateNote(props) {
                 <TextField autoComplete="off" id="desc-input" placeholder="Take a note..." fullWidth onChange={(event) => syncDescription(event.target.value)}
                     name="description" value={description}
                     InputProps={{ classes, disableUnderline: true }} onClick={toggleAccordian} />
-                {selectedLabel.length > 0 && selectedLabel.map(label => {
-                    return <Chip label={label.labelName} onDelete={event => handleLabelDelete(event, label)} color="primary" />
+                {labelList.length > 0 && labelList.filter(lbl => lbl.checked === true).map(label => {
+                    return <Chip className="label-chip" key={label._id} label={label.labelName} onDelete={event => handleLabelDelete(event, label)} color="primary" />
                 })}
                 {toggleCreateNote && <div className="create-note-bottom-panel">
                     <IconButton
@@ -213,8 +243,8 @@ export default function CreateNote(props) {
                             onChange={(event) => syncLabelName(event)} name="labelName" value={labelName}
                             InputProps={{ classes, disableUnderline: true }} /></MenuItem>
                         {labelList.length > 0 && labelList.map(label => {
-                            return <MenuItem key={label._id}><Checkbox
-                                color="primary" id={`labelItem${label._id}`}
+                            return <MenuItem key={label._id}><Checkbox checked={label.checked}
+                                color="primary"
                                 inputProps={{ 'aria-label': 'secondary checkbox' }} onChange={event => handleLabelCheckboxChange(event, label)}
                             /> {label.labelName}</MenuItem>
                         })}
