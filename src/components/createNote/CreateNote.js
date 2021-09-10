@@ -98,12 +98,19 @@ export default function CreateNote(props) {
     }
     const handleClickAway = () => {
         setToggleCreateNote(toggleCreateNote ? false : false);
+        const labels = labelList.filter(lbl => lbl.checked === true).map(lb => {
+            return {
+                labelId: lb._id,
+                labelName: lb.labelName
+            }
+        });
         if (title.trim() !== '' && description.trim() !== '') {
             const noteData = {
                 title,
                 description,
                 isPinned,
                 userId,
+                labels
             };
             createNote(noteData).then((res) => {
                 setNotify({

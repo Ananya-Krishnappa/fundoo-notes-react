@@ -8,7 +8,7 @@ import "./AllNote.scss";
 import Grid from '@material-ui/core/Grid';
 import UpdateNote from "../updateNote/UpdateNote";
 import { AuthContext } from "../../context/AuthContext";
-import { updateNote, pinNote, trashNote, archiveNote } from "../../services/Api";
+import { updateNote, pinNote, trashNote, archiveNote, findAllLabel, createLabel } from "../../services/Api";
 import Notification from "../Notification";
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
@@ -20,41 +20,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import CreateNote from "../createNote/CreateNote";
 import { findAllNotes } from "../../services/Api";
 import Tooltip from '@material-ui/core/Tooltip';
+import Chip from '@material-ui/core/Chip';
+import Checkbox from '@material-ui/core/Checkbox';
+import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles((theme) => ({
     root: {
         minWidth: 275,
         flexGrow: 1,
-    },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
-    },
-    title: {
-        fontSize: 14,
-    },
-    pos: {
-        marginBottom: 12,
-    },
-    toolbar: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
-        ...theme.mixins.toolbar,
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(3),
-    },
-    fab: {
-        margin: theme.spacing(2),
-    },
-    absolute: {
-        position: 'absolute',
-        bottom: theme.spacing(2),
-        right: theme.spacing(3),
     },
 }));
 /**
@@ -66,10 +38,14 @@ export default function AllNote(props) {
     const { userId } = useContext(AuthContext);
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
-    const [noteToDelete, setNoteToDelete] = useState({});
+    const [anchorElAddLabel, setAnchorElAddLabel] = useState(null);
+    const [noteSelected, setNoteSelected] = useState({});
     const [open, setOpen] = useState(false);
     const [noteToUpdate, setNoteToUpdate] = useState({});
     const [notes, setNotes] = useState([]);
+    const [labelList, setLabelList] = useState([]);
+    const [showCreateLabel, setShowCreateLabel] = useState(false);
+    const [labelName, setLabelName] = useState("");
     const [notify, setNotify] = useState({
         isOpen: false,
         message: "",
@@ -85,7 +61,8 @@ export default function AllNote(props) {
     const handleMenuClick = (event, note) => {
         setAnchorEl(event.currentTarget);
         event.stopPropagation();
-        setNoteToDelete(note);
+        setNoteSelected(note);
+        setLabelList([]);
     };
     /**
        * @description handleMenuClose function used to handle on click of close
@@ -93,13 +70,16 @@ export default function AllNote(props) {
     const handleMenuClose = (event) => {
         setAnchorEl(null);
         event.stopPropagation();
+        setNoteSelected({});
     };
     /**
        * @description handleMenuClose function used to handle on click of open
        */
     const handleClickOpen = (event, updateNote) => {
-        setOpen(true);
-        setNoteToUpdate(updateNote);
+        if (anchorElAddLabel === null) {
+            setOpen(true);
+            setNoteToUpdate(updateNote);
+        }
     };
     /**
        * @description handleMenuClose function used to handle on click of close
@@ -113,14 +93,14 @@ export default function AllNote(props) {
     const handleClickAway = (noteData) => {
         setOpen(false);
         const updateNoteBody = {
-            userId, title: noteData.title, description: noteData.description, isPinned: noteData.isPinned
+            userId, title: noteData.title, description: noteData.description, isPinned: noteData.isPinned, labels: noteData.labels
         };
         updateNote(noteData._id, updateNoteBody).then((res) => {
             setNoteToUpdate(res.data.data);
             updateNotesSuccess(res);
         }).catch((error) => {
             updateNotesError(error);
-        });;
+        });
     };
     const updateNotesSuccess = (res) => {
         findNotes();
@@ -160,7 +140,7 @@ export default function AllNote(props) {
         const reqBody = {
             userId, isTrashed: true
         };
-        trashNote(noteToDelete._id, reqBody).then((res) => {
+        trashNote(noteSelected._id, reqBody).then((res) => {
             setNoteToUpdate(res.data.data);
             updateNotesSuccess(res);
         }).catch((error) => {
@@ -181,10 +161,162 @@ export default function AllNote(props) {
     }
     const findNotes = () => {
         findAllNotes(userId).then((res) => {
-            setNotes(res.data.data);
+            const notes = res.data.data;
+            if (notes) {
+                notes.map(note => {
+                    if (note.labels) {
+                        note.labels = note.labels.map(label => {
+                            label.checked = true;
+                            return label;
+                        })
+                    }
+                });
+            }
+            setNotes(notes);
         }).catch((error) => {
             updateNotesError(error);
         });
+    }
+    const handleLabelDelete = (event, note, label) => {
+        event.stopPropagation();
+        const labels = note.labels.filter(lbl => lbl._id !== label._id);
+        const reqBody = {
+            userId, title: note.title, description: note.description, isPinned: note.isPinned, labels
+        };
+        updateNote(note._id, reqBody).then((res) => {
+            setNoteToUpdate(res.data.data);
+            updateNotesSuccess(res);
+        }).catch((error) => {
+            updateNotesError(error);
+        });
+    }
+    const findAllLabelFunc = (defaultChecked, id) => {
+        findAllLabel().then((res) => {
+            if (defaultChecked) {
+                let newLabel = res.data.data.filter(ele => {
+                    if (ele._id === id) {
+                        ele.checked = true;
+                        return ele;
+                    }
+                });
+                setLabelList([...labelList, newLabel[0]]);
+                const updatedNote = noteSelected;
+                updatedNote.labels.push(newLabel[0]);
+                const updateNoteBody = {
+                    userId, title: updatedNote.title, description: updatedNote.description, isPinned: updatedNote.isPinned, labels: updatedNote.labels
+                };
+                updateNote(updatedNote._id, updateNoteBody).then((res) => {
+                    setNoteToUpdate(res.data.data);
+                    updateNotesSuccess(res);
+                }).catch((error) => {
+                    updateNotesError(error);
+                });
+            } else {
+                let allLabels = res.data.data.map(ele => {
+                    if (noteSelected.labels.find(lbl => lbl._id === ele._id)) {
+                        ele.checked = true;
+                    }
+                    return ele;
+                });
+                setLabelList(allLabels);
+            }
+        })
+            .catch((error) => {
+                let message;
+                message = error.response && error.response.data.message;
+                setNotify({
+                    isOpen: true,
+                    message: message,
+                    type: "error",
+                });
+            });
+    }
+    const handleAddLabel = (event) => {
+        setAnchorEl(null);
+        setAnchorElAddLabel(event.currentTarget);
+        event.stopPropagation();
+        findAllLabelFunc();
+    }
+    const handleAddLabelMenuClose = (event) => {
+        setAnchorElAddLabel(null);
+        setLabelName("");
+        setShowCreateLabel(false);
+        event.stopPropagation();
+    }
+    const syncLabelName = (event) => {
+        if (event.target.value.trim() !== "") {
+            setShowCreateLabel(true);
+        }
+        setLabelName(event.target.value);
+    }
+    const handleLabelCheckboxChange = (event, label) => {
+        event.stopPropagation();
+        event.preventDefault();
+        if (event.target.checked) {
+            let allLabels = labelList.map(ele => {
+                if (ele._id === label._id) {
+                    ele.checked = true;
+                    return ele;
+                }
+                return ele;
+            });
+            setLabelList(allLabels);
+            const updatedNote = noteSelected;
+            updatedNote.labels.push(label);
+            const updateNoteBody = {
+                userId, title: updatedNote.title, description: updatedNote.description, isPinned: updatedNote.isPinned, labels: updatedNote.labels
+            };
+            updateNote(updatedNote._id, updateNoteBody).then((res) => {
+                setNoteToUpdate(res.data.data);
+                updateNotesSuccess(res);
+            }).catch((error) => {
+                updateNotesError(error);
+            });
+        } else {
+            let allLabels = labelList.map(ele => {
+                if (ele._id === label._id) {
+                    ele.checked = false;
+                    return ele;
+                }
+                return ele;
+            });
+            setLabelList(allLabels);
+            const updatedNote = noteSelected;
+            updatedNote.labels = allLabels.filter(label => label.checked);
+            const updateNoteBody = {
+                userId, title: updatedNote.title, description: updatedNote.description, isPinned: updatedNote.isPinned, labels: updatedNote.labels
+            };
+            updateNote(updatedNote._id, updateNoteBody).then((res) => {
+                setNoteToUpdate(res.data.data);
+                updateNotesSuccess(res);
+            }).catch((error) => {
+                updateNotesError(error);
+            });
+        }
+    }
+    const createLabelFunc = () => {
+        const labelData = {
+            "labelName": labelName
+        }
+        createLabel(labelData).then((res) => {
+            setNotify({
+                isOpen: true,
+                message: "Label created Successfully",
+                type: "success",
+            });
+            setLabelName("");
+            setShowCreateLabel(false);
+            findAllLabelFunc(true, res.data.data._id);
+        })
+            .catch((error) => {
+                let message;
+                message = error.response && error.response.data.message;
+                setNotify({
+                    isOpen: true,
+                    message: message,
+                    type: "error",
+                });
+            });
     }
     return (
         <React.Fragment>
@@ -209,6 +341,11 @@ export default function AllNote(props) {
                                                     <Typography variant="body2" component="p">
                                                         {note.description}
                                                     </Typography>
+                                                    <Typography>
+                                                        {note.labels && note.labels.length > 0 && note.labels.filter(lbl => lbl.checked === true).map(label => {
+                                                            return <Chip className="label-chip" key={label._id} label={label.labelName} onDelete={event => handleLabelDelete(event, note, label)} color="primary" />
+                                                        })}
+                                                    </Typography>
                                                 </CardContent>
                                                 <CardActions id={note._id} className="card-action-panel display-card-action">
                                                     <Tooltip title="Archive">
@@ -231,7 +368,26 @@ export default function AllNote(props) {
                                                         onClose={handleMenuClose} className="menu-list"
                                                     >
                                                         <MenuItem onClick={(event) => handleDeleteNote(event)}>Delete note</MenuItem>
-                                                        <MenuItem onClick={(event) => handleMenuClose(event)}>Add label</MenuItem>
+                                                        <MenuItem onClick={(event) => handleAddLabel(event)}>Add label</MenuItem>
+                                                    </Menu>
+                                                    <Menu
+                                                        id="add-label-menu"
+                                                        anchorEl={anchorElAddLabel}
+                                                        keepMounted
+                                                        open={Boolean(anchorElAddLabel)}
+                                                        onClose={handleAddLabelMenuClose} className="add-label-menu"
+                                                    >
+                                                        <MenuItem>Label note</MenuItem>
+                                                        <MenuItem onKeyDown={(e) => e.stopPropagation()}><TextField autoComplete="off" id="labelName-input" placeholder="Enter label name" fullWidth
+                                                            onChange={(event) => syncLabelName(event)} name="labelName" value={labelName}
+                                                            InputProps={{ classes, disableUnderline: true }} /></MenuItem>
+                                                        {labelList.map(lbl => {
+                                                            return <MenuItem key={lbl._id}><Checkbox checked={lbl.checked}
+                                                                color="primary"
+                                                                inputProps={{ 'aria-label': 'secondary checkbox' }} onChange={event => handleLabelCheckboxChange(event, lbl)}
+                                                            /> {lbl.labelName}</MenuItem>
+                                                        })}
+                                                        {showCreateLabel && <MenuItem onClick={createLabelFunc}>{`+ Create "${labelName}"`}</MenuItem>}
                                                     </Menu>
                                                 </CardActions>
                                             </Card>
