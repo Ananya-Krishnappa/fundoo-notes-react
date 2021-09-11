@@ -134,13 +134,19 @@ export default function AllNote(props) {
             updateNotesError(error);
         });
     }
-    const handleDeleteNote = (event) => {
+    const handleDeleteNote = (event, isParent, note) => {
+        let noteId = '';
+        if (isParent) {
+            noteId = noteSelected._id;
+        } else {
+            noteId = note._id;
+        }
         setAnchorEl(null);
         event.stopPropagation();
         const reqBody = {
             userId, isTrashed: true
         };
-        trashNote(noteSelected._id, reqBody).then((res) => {
+        trashNote(noteId, reqBody).then((res) => {
             setNoteToUpdate(res.data.data);
             updateNotesSuccess(res);
         }).catch((error) => {
@@ -233,8 +239,8 @@ export default function AllNote(props) {
     }
     const handleAddLabel = (event) => {
         setAnchorEl(null);
-        setAnchorElAddLabel(event.currentTarget);
         event.stopPropagation();
+        setAnchorElAddLabel(event.currentTarget);
         findAllLabelFunc();
     }
     const handleAddLabelMenuClose = (event) => {
@@ -367,8 +373,8 @@ export default function AllNote(props) {
                                                         open={Boolean(anchorEl)}
                                                         onClose={handleMenuClose} className="menu-list"
                                                     >
-                                                        <MenuItem onClick={(event) => handleDeleteNote(event)}>Delete note</MenuItem>
-                                                        <MenuItem onClick={(event) => handleAddLabel(event)}>Add label</MenuItem>
+                                                        <MenuItem onClick={(event) => handleDeleteNote(event, true)}>Delete note</MenuItem>
+                                                        <MenuItem onClick={(event) => handleAddLabel(event, true)}>Add label</MenuItem>
                                                     </Menu>
                                                     <Menu
                                                         id="add-label-menu"
@@ -399,7 +405,13 @@ export default function AllNote(props) {
                     </Grid>
                 </Grid>
                 <UpdateNote isModalOpen={open} handleCloseCallback={handleClose}
-                    handleClickAwayCallback={handleClickAway} note={noteToUpdate}></UpdateNote>
+                    handleClickAwayCallback={handleClickAway} note={noteToUpdate} handleLabelDeleteCallback={handleLabelDelete}
+                    handleDeleteNoteCallback={handleDeleteNote} handleAddLabelCallback={handleAddLabel}
+                    handleAddLabelMenuCloseCallback={handleAddLabelMenuClose}
+                    labelList={labelList} handleLabelCheckboxChangeCallback={handleLabelCheckboxChange}
+                    createLabelFuncCallback={createLabelFunc} syncLabelNameCallback={syncLabelName}
+                    handleMenuClickCallback={handleMenuClick} handleMenuCloseCallback={handleMenuClose}
+                    archiveNoteFuncCallback={archiveNoteFunc}></UpdateNote>
                 <Notification notify={notify} setNotify={setNotify} />
             </div >
         </React.Fragment >
