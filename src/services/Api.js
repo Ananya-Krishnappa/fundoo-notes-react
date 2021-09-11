@@ -13,6 +13,9 @@ export const forgotPassword = (userData) => {
 export const findAllNotes = (userId) => {
     return axios.post("/findNotes/all", { userId: userId });
 }
+export const findNotesByLabelName = (userId, labelName) => {
+    return axios.post(`/findNotesByLabelName/${labelName}`, { userId: userId });
+}
 export const findTrashedNotes = (userId) => {
     return axios.post("/findNotes/trash", { userId: userId });
 }

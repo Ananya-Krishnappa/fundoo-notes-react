@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -22,6 +22,8 @@ import ArchiveIcon from '@material-ui/icons/Archive';
 import { AuthContext } from "../context/AuthContext";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Notification from "../components/Notification";
+import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
+import { findAllLabel } from "../services/Api";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -103,17 +105,46 @@ export default function SideNav(props) {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
     const [menuSelected, setMenuSelected] = useState("Notes");
+    const [labelList, setLabelList] = useState([]);
     const [notify, setNotify] = useState({
         isOpen: false,
         message: "",
         type: "",
     });
+    useEffect(() => {
+        findLabels();
+    }, []);
+    const findLabels = () => {
+        findAllLabel().then((res) => {
+            const labels = res.data.data;
+            labels.map(label => {
+                label.icon = <LabelOutlinedIcon />;
+                label.action = findNotesByLabelName;
+                return label;
+            });
+            setLabelList(labels);
+        }).catch((error) => {
+            let message;
+            message = error.response && error.response.data.message;
+            setNotify({
+                isOpen: true,
+                message: message,
+                type: "error",
+            });
+        });
+    }
     /**
     * @description Function to retrieve all notes
     */
     const getAllNotes = () => {
         setMenuSelected("Notes");
         history.push("/fundoo/notes");
+        props.syncRouteLabelCallback("all");
+    };
+    const findNotesByLabelName = (event, labelName) => {
+        setMenuSelected(labelName);
+        history.push(`/fundoo/notes/${labelName}`);
+        props.syncRouteLabelCallback(labelName);
     };
     /**
     * @description Function to retrieve all archive notes
@@ -204,6 +235,13 @@ export default function SideNav(props) {
                             className={item.name === menuSelected ? "menu-selected" : ""}>
                             <ListItemIcon>{item.icon}</ListItemIcon>
                             <ListItemText primary={item.name} />
+                        </ListItem>
+                    ))}
+                    {labelList.map((label) => (
+                        <ListItem button key={label.labelName} onClick={event => label.action(event, label.labelName)}
+                            className={label.labelName === menuSelected ? "menu-selected" : ""}>
+                            <ListItemIcon>{label.icon}</ListItemIcon>
+                            <ListItemText primary={label.labelName} />
                         </ListItem>
                     ))}
                 </List>
