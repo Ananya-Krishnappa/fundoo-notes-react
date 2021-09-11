@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Dashboard.css";
 import SideNav from "../SideNav";
 import { makeStyles } from '@material-ui/core/styles';
@@ -25,15 +25,19 @@ const useStyles = makeStyles((theme) => ({
  */
 export default function Dashboard(props) {
   const classes = useStyles();
+  const [routeLabel, setRouteLabel] = useState("all");
+  const syncRouteLabel = (labelName) => {
+    setRouteLabel(labelName);
+  };
   return (
     <div>
       <div className="container-fluid">
-        <SideNav>
+        <SideNav syncRouteLabelCallback={syncRouteLabel}>
           <main className={classes.content}>
             <div className={classes.toolbar} />
             <Switch>
-              <Route path="/fundoo/notes" render={(props) => (
-                <AllNote />
+              <Route path="/fundoo/notes/:labelName" render={(routeProps) => (
+                <AllNote {...props} routeLabel={routeLabel} {...routeProps} />
               )} />
               <Route path="/fundoo/archive" render={(props) => (
                 <ArchiveNote />
@@ -41,7 +45,7 @@ export default function Dashboard(props) {
               <Route path="/fundoo/trash" render={(props) => (
                 <TrashNote />
               )} />
-              <Redirect to="/fundoo/notes" />
+              <Redirect to="/fundoo/notes/all" />
             </Switch>
           </main>
         </SideNav>

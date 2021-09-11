@@ -8,7 +8,7 @@ import "./AllNote.scss";
 import Grid from '@material-ui/core/Grid';
 import UpdateNote from "../updateNote/UpdateNote";
 import { AuthContext } from "../../context/AuthContext";
-import { updateNote, pinNote, trashNote, archiveNote, findAllLabel, createLabel } from "../../services/Api";
+import { updateNote, pinNote, trashNote, archiveNote, findAllLabel, createLabel, findNotesByLabelName } from "../../services/Api";
 import Notification from "../Notification";
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
@@ -52,8 +52,8 @@ export default function AllNote(props) {
         type: "",
     });
     useEffect(() => {
-        findNotes();
-    }, []);
+        findNotes(props.routeLabel);
+    }, [props.routeLabel]);
     /**
      * @description handleMenuClick function used to handle on click of card
      * @return props containing note details
@@ -103,7 +103,7 @@ export default function AllNote(props) {
         });
     };
     const updateNotesSuccess = (res) => {
-        findNotes();
+        findNotes(props.match.params.labelName);
     }
     const updateNotesError = (error) => {
         let message;
@@ -165,23 +165,43 @@ export default function AllNote(props) {
             updateNotesError(error);
         });
     }
-    const findNotes = () => {
-        findAllNotes(userId).then((res) => {
-            const notes = res.data.data;
-            if (notes) {
-                notes.map(note => {
-                    if (note.labels) {
-                        note.labels = note.labels.map(label => {
-                            label.checked = true;
-                            return label;
-                        })
-                    }
-                });
-            }
-            setNotes(notes);
-        }).catch((error) => {
-            updateNotesError(error);
-        });
+    const findNotes = (labelName) => {
+        if (labelName === "all") {
+            findAllNotes(userId).then((res) => {
+                const notes = res.data.data;
+                if (notes) {
+                    notes.map(note => {
+                        if (note.labels) {
+                            note.labels = note.labels.map(label => {
+                                label.checked = true;
+                                return label;
+                            })
+                        }
+                    });
+                }
+                setNotes(notes);
+            }).catch((error) => {
+                updateNotesError(error);
+            });
+        } else {
+            findNotesByLabelName(userId, labelName).then((res) => {
+                const notes = res.data.data;
+                if (notes) {
+                    notes.map(note => {
+                        if (note.labels) {
+                            note.labels = note.labels.map(label => {
+                                label.checked = true;
+                                return label;
+                            })
+                        }
+                    });
+                }
+                setNotes(notes);
+            }).catch((error) => {
+                updateNotesError(error);
+            });
+        }
+
     }
     const handleLabelDelete = (event, note, label) => {
         event.stopPropagation();
