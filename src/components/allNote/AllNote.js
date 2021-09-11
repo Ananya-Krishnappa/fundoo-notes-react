@@ -341,7 +341,7 @@ export default function AllNote(props) {
                                                     <Typography variant="body2" component="p">
                                                         {note.description}
                                                     </Typography>
-                                                    <Typography>
+                                                    <Typography className="chip-section">
                                                         {note.labels && note.labels.length > 0 && note.labels.filter(lbl => lbl.checked === true).map(label => {
                                                             return <Chip className="label-chip" key={label._id} label={label.labelName} onDelete={event => handleLabelDelete(event, note, label)} color="primary" />
                                                         })}
