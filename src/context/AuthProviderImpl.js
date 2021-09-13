@@ -7,14 +7,17 @@ class AuthProviderImpl extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isAuthenticated: false,
-            webToken: null,
-            userId: null,
+            isAuthenticated: localStorage.getItem("isAuthenticated"),
+            webToken: localStorage.getItem("webToken"),
+            userId: localStorage.getItem("userId"),
         }
     }
     authenticate = (credentials) => {
         return Axios.post(authUrl, credentials).then(response => {
             if (response.data.success === true) {
+                localStorage.setItem("isAuthenticated", true);
+                localStorage.setItem("webToken", response.data.data.token);
+                localStorage.setItem("userId", response.data.data.id);
                 this.setState({
                     isAuthenticated: true,
                     webToken: response.data.data.token,
@@ -28,6 +31,9 @@ class AuthProviderImpl extends Component {
     }
     signout = () => {
         this.setState({ isAuthenticated: false, webToken: null, userId: null });
+        localStorage.setItem("isAuthenticated", false);
+        localStorage.setItem("webToken", null);
+        localStorage.setItem("userId", null);
         this.props.history.push("/fundoo");
     }
     render = () =>
