@@ -50,18 +50,27 @@ export default function CreateNote(props) {
         setShowCreateLabel(false);
         event.stopPropagation();
     };
+    /**
+     * @description handle add label functionality on menu close
+     */
     const handleAddLabelMenuClose = (event) => {
         setAnchorElAddLabel(null);
         setLabelName("");
         setShowCreateLabel(false);
         event.stopPropagation();
     }
+    /**
+     * @description function to handle add label operation
+     */
     const handleAddLabel = (event) => {
         setAnchorEl(null);
         setAnchorElAddLabel(event.currentTarget);
         event.stopPropagation();
         labelList.length === 0 && findAllLabelFunc();
     }
+    /**
+     * @description function to find all label
+     */
     const findAllLabelFunc = (defaultChecked, id) => {
         findAllLabel().then((res) => {
             if (defaultChecked) {
@@ -96,6 +105,9 @@ export default function CreateNote(props) {
     const closeAccordian = () => {
         setToggleCreateNote(!toggleCreateNote);
     }
+    /**
+     * @description function to handle create note on click away
+     */
     const handleClickAway = () => {
         setToggleCreateNote(toggleCreateNote ? false : false);
         const labels = labelList.filter(lbl => lbl.checked === true).map(lb => {
@@ -152,6 +164,9 @@ export default function CreateNote(props) {
     const syncIsPinned = () => {
         toggleIsPinned(!isPinned)
     }
+    /**
+     * @description function to create label
+     */
     const createLabelFunc = () => {
         const labelData = {
             "labelName": labelName
@@ -176,6 +191,9 @@ export default function CreateNote(props) {
                 });
             });
     }
+    /**
+     * @description function to handle label on change in checkbox
+     */
     const handleLabelCheckboxChange = (event, label) => {
         if (event.target.checked) {
             let allLabels = labelList.map(ele => {
@@ -197,6 +215,9 @@ export default function CreateNote(props) {
             setLabelList(allLabels);
         }
     }
+    /**
+     * @description function to handle delete label
+     */
     const handleLabelDelete = (event, label) => {
         let allLabels = labelList.map(ele => {
             if (ele._id === label._id) {

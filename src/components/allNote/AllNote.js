@@ -102,9 +102,15 @@ export default function AllNote(props) {
             updateNotesError(error);
         });
     };
+    /**
+     * @description function to find all note on success
+     */
     const updateNotesSuccess = (res) => {
         findNotes(props.match.params.labelName);
     }
+    /**
+     * @description function to display message on error
+     */
     const updateNotesError = (error) => {
         let message;
         message = error.response && error.response.data.message;
@@ -114,14 +120,23 @@ export default function AllNote(props) {
             type: "error",
         });
     }
+    /**
+     * @description function to display card using id
+     */
     const showActionPanel = (id) => {
         document.getElementById("pin" + id).classList.remove("display-card-action");
         document.getElementById(id).classList.remove("display-card-action");
     }
+    /**
+     * @description function to handle actions on card by id
+     */
     const hideActionPanel = (id) => {
         document.getElementById("pin" + id).classList.add("display-card-action");
         document.getElementById(id).classList.add("display-card-action");
     }
+    /**
+     * @description function to achive note functionality
+     */
     const archiveNoteFunc = (event, note) => {
         event.stopPropagation();
         const reqBody = {
@@ -134,6 +149,9 @@ export default function AllNote(props) {
             updateNotesError(error);
         });
     }
+    /**
+     * @description function to handle delete note functionality
+     */
     const handleDeleteNote = (event, isParent, note) => {
         let noteId = '';
         if (isParent) {
@@ -153,6 +171,9 @@ export default function AllNote(props) {
             updateNotesError(error);
         });
     }
+    /**
+     * @description functionality to handle pin notes functionality
+     */
     const pinNoteFunc = (event, note) => {
         event.stopPropagation();
         const reqBody = {
@@ -165,6 +186,9 @@ export default function AllNote(props) {
             updateNotesError(error);
         });
     }
+    /**
+     * @description functionality to find all notes
+     */
     const findNotes = (labelName) => {
         if (labelName === "all") {
             findAllNotes(userId).then((res) => {
@@ -203,6 +227,9 @@ export default function AllNote(props) {
         }
 
     }
+    /**
+     * @description function to handle label delete operation
+     */
     const handleLabelDelete = (event, note, label) => {
         event.stopPropagation();
         const labels = note.labels.filter(lbl => lbl._id !== label._id);
@@ -216,6 +243,9 @@ export default function AllNote(props) {
             updateNotesError(error);
         });
     }
+    /**
+     * @description function to handle find all label function
+     */
     const findAllLabelFunc = (defaultChecked, id) => {
         findAllLabel().then((res) => {
             if (defaultChecked) {
@@ -257,24 +287,36 @@ export default function AllNote(props) {
                 });
             });
     }
+    /**
+     * @description function to handle add label operation
+     */
     const handleAddLabel = (event) => {
         setAnchorEl(null);
         event.stopPropagation();
         setAnchorElAddLabel(event.currentTarget);
         findAllLabelFunc();
     }
+    /**
+     * @description function to handle add label on close
+     */
     const handleAddLabelMenuClose = (event) => {
         setAnchorElAddLabel(null);
         setLabelName("");
         setShowCreateLabel(false);
         event.stopPropagation();
     }
+    /**
+     * @description function to sync label name
+     */
     const syncLabelName = (event) => {
         if (event.target.value.trim() !== "") {
             setShowCreateLabel(true);
         }
         setLabelName(event.target.value);
     }
+    /**
+     * @description function to handle label checkout on selection
+     */
     const handleLabelCheckboxChange = (event, label) => {
         event.stopPropagation();
         event.preventDefault();
@@ -320,6 +362,9 @@ export default function AllNote(props) {
             });
         }
     }
+    /**
+     * @description function to create label
+     */
     const createLabelFunc = () => {
         const labelData = {
             "labelName": labelName

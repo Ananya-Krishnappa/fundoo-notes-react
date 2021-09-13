@@ -122,9 +122,15 @@ export default function ArchiveNote(props) {
       updateNotesError(error);
     });;
   };
+  /**
+     * @description function to find all notes on success
+     */
   const updateNotesSuccess = (res) => {
     findNotes();
   }
+  /**
+     * @description function to display error message 
+     */
   const updateNotesError = (error) => {
     let message;
     message = error.response && error.response.data.message;
@@ -134,14 +140,23 @@ export default function ArchiveNote(props) {
       type: "error",
     });
   }
+  /**
+     * @description function to handle show action panel
+     */
   const showActionPanel = (id) => {
     document.getElementById("pin" + id).classList.remove("display-card-action");
     document.getElementById(id).classList.remove("display-card-action");
   }
+  /**
+     * @description function to handle action panel
+     */
   const hideActionPanel = (id) => {
     document.getElementById("pin" + id).classList.add("display-card-action");
     document.getElementById(id).classList.add("display-card-action");
   }
+  /**
+     * @description function to handle unarchive notes
+     */
   const unArchiveNoteFunc = (event, note) => {
     event.stopPropagation();
     const reqBody = {
@@ -154,6 +169,9 @@ export default function ArchiveNote(props) {
       updateNotesError(error);
     });
   }
+  /**
+     * @description function to handle delete notes
+     */
   const handleDeleteNote = (event) => {
     setAnchorEl(null);
     event.stopPropagation();
@@ -167,6 +185,9 @@ export default function ArchiveNote(props) {
       updateNotesError(error);
     });
   }
+  /**
+     * @description function to pin notes
+     */
   const pinNoteFunc = (event, note) => {
     event.stopPropagation();
     const reqBody = {
@@ -179,6 +200,9 @@ export default function ArchiveNote(props) {
       updateNotesError(error);
     });
   }
+  /**
+     * @description function to find all notes
+     */
   const findNotes = () => {
     findArchivedNotes(userId).then((res) => {
       setNotes(res.data.data);
