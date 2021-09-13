@@ -186,41 +186,33 @@ export default function AllNote(props) {
             updateNotesError(error);
         });
     }
+    const findAllNotesSuccess = (res) => {
+        const notes = res.data.data;
+        if (notes) {
+            notes.map(note => {
+                if (note.labels) {
+                    note.labels = note.labels.map(label => {
+                        label.checked = true;
+                        return label;
+                    })
+                }
+            });
+        }
+        setNotes(notes);
+    }
     /**
      * @description functionality to find all notes
      */
     const findNotes = (labelName) => {
         if (labelName === "all") {
             findAllNotes(userId).then((res) => {
-                const notes = res.data.data;
-                if (notes) {
-                    notes.map(note => {
-                        if (note.labels) {
-                            note.labels = note.labels.map(label => {
-                                label.checked = true;
-                                return label;
-                            })
-                        }
-                    });
-                }
-                setNotes(notes);
+                findAllNotesSuccess(res);
             }).catch((error) => {
                 updateNotesError(error);
             });
         } else {
             findNotesByLabelName(userId, labelName).then((res) => {
-                const notes = res.data.data;
-                if (notes) {
-                    notes.map(note => {
-                        if (note.labels) {
-                            note.labels = note.labels.map(label => {
-                                label.checked = true;
-                                return label;
-                            })
-                        }
-                    });
-                }
-                setNotes(notes);
+                findAllNotesSuccess(res);
             }).catch((error) => {
                 updateNotesError(error);
             });
@@ -412,11 +404,11 @@ export default function AllNote(props) {
                                                     <Typography variant="body2" component="p">
                                                         {note.description}
                                                     </Typography>
-                                                    <Typography className="chip-section">
+                                                    <div className="chip-section">
                                                         {note.labels && note.labels.length > 0 && note.labels.filter(lbl => lbl.checked === true).map(label => {
                                                             return <Chip className="label-chip" key={label._id} label={label.labelName} onDelete={event => handleLabelDelete(event, note, label)} color="primary" />
                                                         })}
-                                                    </Typography>
+                                                    </div>
                                                 </CardContent>
                                                 <CardActions id={note._id} className="card-action-panel display-card-action">
                                                     <Tooltip title="Archive">
