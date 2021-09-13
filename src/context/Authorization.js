@@ -9,7 +9,7 @@ export const Authorization = authConsumer(class extends Component {
         return <div className="container-fluid">
             {
                 !this.props.isAuthenticated &&
-                <Header></Header>
+                <Header title="FundooNotes"></Header>
             }
             <div className="row">
                 <div className="col fundoo-body">

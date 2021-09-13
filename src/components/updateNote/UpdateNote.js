@@ -151,7 +151,7 @@ export default function UpdateNote(props) {
             <ClickAwayListener onClickAway={handleClickAway}>
                 <div>
                     <DialogContent dividers>
-                        <div className="update-note-container">
+                        {note && <div className="update-note-container">
                             <div className={note.isPinned ? "pin-note pin" : "pin-note"}
                                 onClick={syncIsPinned}></div>
                             <TextField className="update-title" autoComplete="off" id="title-input" placeholder="Title" fullWidth
@@ -161,12 +161,12 @@ export default function UpdateNote(props) {
                                 onChange={(event) => syncDescription(event.target.value)}
                                 name="description" value={note.description}
                                 InputProps={{ disableUnderline: true }} />
-                            <Typography className="chip-section">
+                            <div className="chip-section">
                                 {note.labels && note.labels.length > 0 && note.labels.filter(lbl => lbl.checked === true).map(label => {
                                     return <Chip className="label-chip" key={label._id} label={label.labelName} onDelete={event => handleLabelDelete(event, note, label)} color="primary" />
                                 })}
-                            </Typography>
-                        </div>
+                            </div>
+                        </div>}
                     </DialogContent>
                     <DialogActions>
                         <Tooltip title="Archive">
