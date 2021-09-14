@@ -204,6 +204,7 @@ export default function AllNote(props) {
      * @description functionality to find all notes
      */
     const findNotes = (labelName) => {
+        //throw new Error('I crashed!');
         if (labelName === "all") {
             findAllNotes(userId).then((res) => {
                 findAllNotesSuccess(res);

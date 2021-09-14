@@ -6,6 +6,7 @@ import { Route, Redirect, Switch } from "react-router-dom";
 import ArchiveNote from "../archiveNote/ArchiveNote";
 import TrashNote from "../trashNote/TrashNote";
 import AllNote from "../allNote/AllNote";
+import ErrorBoundary from "../errorPage/ErrorPage";
 const useStyles = makeStyles((theme) => ({
   toolbar: {
     display: 'flex',
@@ -32,23 +33,25 @@ export default function Dashboard(props) {
   return (
     <div>
       <div className="container-fluid">
-        <SideNav syncRouteLabelCallback={syncRouteLabel}>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <Switch>
-              <Route path="/fundoo/notes/:labelName" render={(routeProps) => (
-                <AllNote {...props} routeLabel={routeLabel} {...routeProps} />
-              )} />
-              <Route path="/fundoo/archive" render={(props) => (
-                <ArchiveNote />
-              )} />
-              <Route path="/fundoo/trash" render={(props) => (
-                <TrashNote />
-              )} />
-              <Redirect to="/fundoo/notes/all" />
-            </Switch>
-          </main>
-        </SideNav>
+        <ErrorBoundary>
+          <SideNav syncRouteLabelCallback={syncRouteLabel}>
+            <main className={classes.content}>
+              <div className={classes.toolbar} />
+              <Switch>
+                <Route path="/fundoo/notes/:labelName" render={(routeProps) => (
+                  <AllNote {...props} routeLabel={routeLabel} {...routeProps} />
+                )} />
+                <Route path="/fundoo/archive" render={(props) => (
+                  <ArchiveNote />
+                )} />
+                <Route path="/fundoo/trash" render={(props) => (
+                  <TrashNote />
+                )} />
+                <Redirect to="/fundoo/notes/all" />
+              </Switch>
+            </main>
+          </SideNav>
+        </ErrorBoundary>
       </div>
     </div>
   );
