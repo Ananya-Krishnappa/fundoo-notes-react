@@ -7,7 +7,7 @@ class AuthProviderImpl extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isAuthenticated: localStorage.getItem("isAuthenticated"),
+            isAuthenticated: JSON.parse(localStorage.getItem("isAuthenticated")),
             webToken: localStorage.getItem("webToken"),
             userId: localStorage.getItem("userId"),
         }
