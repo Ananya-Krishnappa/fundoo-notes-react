@@ -11,7 +11,7 @@ import * as Yup from "yup";
 import { getTitle } from "../components/Title";
 import "../global/styles.scss";
 import { useHistory, useLocation } from "react-router-dom";
-import { Header } from "../components/Header";
+import { Header } from "../components/header/Header";
 import { resetPassword } from "../services/Api";
 /**
  * @description ResetPassword functional component to return ResetPassword Page
