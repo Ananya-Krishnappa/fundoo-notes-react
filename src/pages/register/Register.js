@@ -7,14 +7,14 @@ import {
     Button,
 } from "@material-ui/core";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import Notification from "../components/Notification";
-import { getTitle } from "../components/Title";
+import Notification from "../../components/Notification";
+import { getTitle } from "../../components/Title";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
-import "../global/styles.scss";
+import "../../global/styles.scss";
 import { useHistory } from "react-router-dom";
-import { Header } from "../components/Header";
-import { register } from "../services/Api";
+import { Header } from "../../components/header/Header";
+import { register } from "../../services/Api";
 
 /**
  * @description Register functional component to return Register Page

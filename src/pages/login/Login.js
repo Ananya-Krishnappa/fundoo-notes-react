@@ -9,11 +9,11 @@ import {
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
-import "../global/styles.scss";
+import "../../global/styles.scss";
 import { useHistory } from "react-router";
-import Notification from "../components/Notification";
-import { getTitle } from "../components/Title";
-import { AuthContext } from "../context/AuthContext";
+import Notification from "../../components/Notification";
+import { getTitle } from "../../components/Title";
+import { AuthContext } from "../../context/AuthContext";
 
 /**
  * @description Login functional component to return Login Page

@@ -1,7 +1,7 @@
 import React from "react";
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import Enzyme, { shallow, mount } from "enzyme";
-import TrashNote from "../components/trashNote/TrashNote";
+import TrashNote from "./TrashNote";
 import { render, unmountComponentAtNode } from "react-dom";
 // import { act } from "react-dom/test-utils";
 // import * as apis from "../services/Api";

@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
-import Login from "../pages/Login";
+import Login from "../pages/login/Login";
 import Dashboard from "../components/dashboard/Dashboard";
-import { Header } from "../components/Header";
+import { Header } from "../components/header/Header";
 import { AuthContext } from "./AuthContext";
 export const Authorization = () => {
     const { isAuthenticated } = useContext(AuthContext);

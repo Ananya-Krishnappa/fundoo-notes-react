@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { authConsumer } from "../context/AuthConsumer";
+import { authConsumer } from "../../context/AuthConsumer";
 export const Header = authConsumer(class extends Component {
     render() {
         return <div className="row">

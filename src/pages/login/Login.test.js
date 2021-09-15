@@ -1,9 +1,7 @@
 import React from "react";
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import Enzyme, { shallow, mount } from "enzyme";
-import Login from "../pages/Login";
-import {Route, Switch} from "react-router";
-import { render } from "@testing-library/react";
+import Login from "../login/Login";
 import "@testing-library/jest-dom/extend-expect";
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -25,20 +23,3 @@ it("Shallow renders one login form container", () => {
     const count = wrapper.find("div.login-form-container").length
     expect(count).toBe(1);
 });
-
-
-// describe("Login Elements availabity test", () => {
-//     let getByTestId;
-//     beforeEach(() => {
-//         ({ getByTestId } = render(<Login />));
-//     });
-
-//     it("Should contain the given elements in login page", () => {
-//         const form = getByTestId("form");
-//         const email = getByTestId("email");
-//         const password = getByTestId("password");
-//         expect(form).toBeInTheDocument();
-//         expect(email).toBeInTheDocument();
-//         expect(password).toBeInTheDocument();
-//     });
-//});

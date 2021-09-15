@@ -5,8 +5,8 @@ import { BrowserRouter as Router, Route, Switch, Redirect }
     from "react-router-dom";
 import AuthProviderImpl from "./context/AuthProviderImpl";
 import { Authorization } from "./context/Authorization";
-import Register from "./pages/Register";
-import ForgotPassword from "./pages/ForgotPassword";
+import Register from "./pages/register/Register";
+import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import "./App.css";
 export class App extends Component {
