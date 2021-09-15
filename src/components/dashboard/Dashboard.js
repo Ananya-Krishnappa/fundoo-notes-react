@@ -38,8 +38,8 @@ export default function Dashboard(props) {
             <main className={classes.content}>
               <div className={classes.toolbar} />
               <Switch>
-                <Route path="/fundoo/notes/:labelName" render={(routeProps) => (
-                  <AllNote {...props} routeLabel={routeLabel} {...routeProps} />
+                <Route path="/fundoo/notes/:labelName" render={() => (
+                  <AllNote {...props} routeLabel={routeLabel} />
                 )} />
                 <Route path="/fundoo/archive" render={(props) => (
                   <ArchiveNote />
