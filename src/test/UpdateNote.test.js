@@ -1,6 +1,6 @@
 import React from "react";
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { shallow, mount } from "enzyme";
+import Enzyme, { mount } from "enzyme";
 import UpdateNote from "../components/updateNote/UpdateNote";
 
 Enzyme.configure({ adapter: new Adapter() });

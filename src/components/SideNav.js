@@ -167,14 +167,11 @@ export default function SideNav(props) {
         { name: "Archive", icon: <ArchiveIcon />, action: getArchivedNotes },
         { name: "Trash", icon: <DeleteIcon />, action: getTrashedNotes }
     ];
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
     /**
      * @description Function to handle drawer close
      */
-    const handleDrawerClose = () => {
-        setOpen(false);
+    const toggleDrawer = () => {
+        setOpen(!open);
     };
     return (
         <div className={classes.root}>
@@ -189,7 +186,7 @@ export default function SideNav(props) {
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
-                        onClick={handleDrawerOpen}
+                        onClick={toggleDrawer}
                         edge="start"
                         className={clsx(classes.menuButton, {
                             [classes.hide]: open,
@@ -224,7 +221,7 @@ export default function SideNav(props) {
                 }}
             >
                 <div className={classes.toolbar}>
-                    <IconButton onClick={handleDrawerClose}>
+                    <IconButton onClick={toggleDrawer}>
                         {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                     </IconButton>
                 </div>

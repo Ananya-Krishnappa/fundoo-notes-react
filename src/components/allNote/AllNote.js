@@ -1,28 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import clsx from 'clsx';
 import "./AllNote.scss";
 import Grid from '@material-ui/core/Grid';
 import UpdateNote from "../updateNote/UpdateNote";
 import { AuthContext } from "../../context/AuthContext";
 import { updateNote, pinNote, trashNote, archiveNote, findAllLabel, createLabel, findNotesByLabelName } from "../../services/Api";
 import Notification from "../Notification";
-import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
-import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
-import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import CreateNote from "../createNote/CreateNote";
+import Note from "../notes/Notes";
 import { findAllNotes } from "../../services/Api";
-import Tooltip from '@material-ui/core/Tooltip';
-import Chip from '@material-ui/core/Chip';
-import Checkbox from '@material-ui/core/Checkbox';
-import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles((theme) => ({
     root: {
         minWidth: 275,
@@ -119,20 +105,6 @@ export default function AllNote(props) {
             message: message,
             type: "error",
         });
-    }
-    /**
-     * @description function to display card using id
-     */
-    const showActionPanel = (id) => {
-        document.getElementById("pin" + id).classList.remove("display-card-action");
-        document.getElementById(id).classList.remove("display-card-action");
-    }
-    /**
-     * @description function to handle actions on card by id
-     */
-    const hideActionPanel = (id) => {
-        document.getElementById("pin" + id).classList.add("display-card-action");
-        document.getElementById(id).classList.add("display-card-action");
     }
     /**
      * @description function to achive note functionality
@@ -386,81 +358,42 @@ export default function AllNote(props) {
         <React.Fragment>
             <CreateNote createNoteCallback={findNotes}></CreateNote>
             <div className="note-list-container">
-                <Grid container className={classes.root}>
-                    <Grid item xs={12}>
-                        <Grid container justifyContent="center" item xs={12} >
-                            {
-                                notes !== undefined && notes.map((note, index) => {
-                                    return (
-                                        <Grid key={index} item xs={12} sm={6} md={4} lg={4}>
-                                            <Card onMouseOut={() => hideActionPanel(note._id)} onMouseOver={() => showActionPanel(note._id)} className={clsx(classes.root, "note-card")}
-                                                onClick={(event) => handleClickOpen(event, note)}>
-                                                <CardContent>
-                                                    <Typography onClick={(event) => pinNoteFunc(event, note)} id={"pin" + note._id} className="display-card-action">
-                                                        <div className={note.isPinned ? "pin-note pin" : "pin-note"}></div>
-                                                    </Typography>
-                                                    <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                                        {note.title}
-                                                    </Typography>
-                                                    <Typography variant="body2" component="p">
-                                                        {note.description}
-                                                    </Typography>
-                                                    <div className="chip-section">
-                                                        {note.labels && note.labels.length > 0 && note.labels.filter(lbl => lbl.checked === true).map(label => {
-                                                            return <Chip className="label-chip" key={label._id} label={label.labelName} onDelete={event => handleLabelDelete(event, note, label)} color="primary" />
-                                                        })}
-                                                    </div>
-                                                </CardContent>
-                                                <CardActions id={note._id} className="card-action-panel display-card-action">
-                                                    <Tooltip title="Archive">
-                                                        <Button size="small" onClick={(event) => archiveNoteFunc(event, note)}>
-                                                            <ArchiveOutlinedIcon></ArchiveOutlinedIcon>
-                                                        </Button>
-                                                    </Tooltip>
-                                                    <IconButton
-                                                        aria-label="more"
-                                                        aria-controls="long-menu"
-                                                        aria-haspopup="true" onClick={(event) => handleMenuClick(event, note)}
-                                                    >
-                                                        <MoreVertIcon />
-                                                    </IconButton>
-                                                    <Menu
-                                                        id="simple-menu"
-                                                        anchorEl={anchorEl}
-                                                        keepMounted
-                                                        open={Boolean(anchorEl)}
-                                                        onClose={handleMenuClose} className="menu-list"
-                                                    >
-                                                        <MenuItem onClick={(event) => handleDeleteNote(event, true)}>Delete note</MenuItem>
-                                                        <MenuItem onClick={(event) => handleAddLabel(event, true)}>Add label</MenuItem>
-                                                    </Menu>
-                                                    <Menu
-                                                        id="add-label-menu"
-                                                        anchorEl={anchorElAddLabel}
-                                                        keepMounted
-                                                        open={Boolean(anchorElAddLabel)}
-                                                        onClose={handleAddLabelMenuClose} className="add-label-menu"
-                                                    >
-                                                        <MenuItem>Label note</MenuItem>
-                                                        <MenuItem onKeyDown={(e) => e.stopPropagation()}><TextField autoComplete="off" id="labelName-input" placeholder="Enter label name" fullWidth
-                                                            onChange={(event) => syncLabelName(event)} name="labelName" value={labelName}
-                                                            InputProps={{ classes, disableUnderline: true }} /></MenuItem>
-                                                        {labelList.map(lbl => {
-                                                            return <MenuItem key={lbl._id}><Checkbox checked={lbl.checked}
-                                                                color="primary"
-                                                                inputProps={{ 'aria-label': 'secondary checkbox' }} onChange={event => handleLabelCheckboxChange(event, lbl)}
-                                                            /> {lbl.labelName}</MenuItem>
-                                                        })}
-                                                        {showCreateLabel && <MenuItem onClick={createLabelFunc}>{`+ Create "${labelName}"`}</MenuItem>}
-                                                    </Menu>
-                                                </CardActions>
-                                            </Card>
-                                        </Grid>
-                                    );
-                                })
-                            }
-                        </Grid>
-                    </Grid>
+                {notes !== undefined && (notes.filter(note => note.isPinned).length > 0) && <div className="pinned-section">Pinned</div>}
+                <Grid container justifyContent="center" item xs={12} className="pin-grid-container">
+                    {
+                        notes !== undefined && notes.filter(note => note.isPinned).map((note, index) => {
+                            return (
+                                <Note note={note} index={index} handleClickOpenCallback={handleClickOpen}
+                                    pinNoteFuncCallback={pinNoteFunc} handleLabelDeleteCallback={handleLabelDelete}
+                                    archiveNoteFuncCallback={archiveNoteFunc} handleMenuClickCallback={handleMenuClick}
+                                    anchorEl={anchorEl} handleMenuCloseCallback={handleMenuClose}
+                                    handleDeleteNoteCallback={handleDeleteNote} handleAddLabelCallback={handleAddLabel}
+                                    anchorElAddLabel={anchorElAddLabel} handleAddLabelMenuCloseCallback={handleAddLabelMenuClose}
+                                    syncLabelNameCallback={syncLabelName} labelName={labelName}
+                                    labelList={labelList} handleLabelCheckboxChangeCallback={handleLabelCheckboxChange}
+                                    showCreateLabel={showCreateLabel} createLabelFuncCallback={createLabelFunc}></Note>
+                            )
+                        })}
+                </Grid>
+                {notes !== undefined && (notes.filter(note => !note.isPinned).length > 0) && <div className="others-section">Others</div>}
+                <Grid container justifyContent="center" item xs={12} className="pin-grid-container">
+                    {
+                        notes !== undefined && notes.filter(note => !note.isPinned).map((note, index) => {
+                            return (
+                                <React.Fragment>
+                                    <Note note={note} index={index} handleClickOpenCallback={handleClickOpen}
+                                        pinNoteFuncCallback={pinNoteFunc} handleLabelDeleteCallback={handleLabelDelete}
+                                        archiveNoteFuncCallback={archiveNoteFunc} handleMenuClickCallback={handleMenuClick}
+                                        anchorEl={anchorEl} handleMenuCloseCallback={handleMenuClose}
+                                        handleDeleteNoteCallback={handleDeleteNote} handleAddLabelCallback={handleAddLabel}
+                                        anchorElAddLabel={anchorElAddLabel} handleAddLabelMenuCloseCallback={handleAddLabelMenuClose}
+                                        syncLabelNameCallback={syncLabelName} labelName={labelName}
+                                        labelList={labelList} handleLabelCheckboxChangeCallback={handleLabelCheckboxChange}
+                                        showCreateLabel={showCreateLabel} createLabelFuncCallback={createLabelFunc}></Note>
+                                </React.Fragment>
+                            );
+                        })
+                    }
                 </Grid>
                 <UpdateNote isModalOpen={open} handleCloseCallback={handleClose}
                     handleClickAwayCallback={handleClickAway} note={noteToUpdate} handleLabelDeleteCallback={handleLabelDelete}
