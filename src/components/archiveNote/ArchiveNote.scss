@@ -49,3 +49,10 @@
 .note-list-container {
     margin: 0 0 20px 0;
 }
+.root {
+    min-width: 275;
+    flex-grow: 1;
+  }
+  .title {
+    font-size: 14;
+  }

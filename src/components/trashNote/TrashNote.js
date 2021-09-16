@@ -17,21 +17,6 @@ import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined'
 import { findTrashedNotes } from "../../services/Api";
 import Tooltip from '@material-ui/core/Tooltip';
 const useStyles = makeStyles((theme) => ({
-  root: {
-    minWidth: 275,
-    flexGrow: 1,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
   toolbar: {
     display: 'flex',
     alignItems: 'center',
@@ -150,7 +135,7 @@ export default function TrashNote(props) {
   return (
     <React.Fragment>
       <div className="note-list-container">
-        <Grid container className={classes.root}>
+        <Grid container className="root">
           <Grid item xs={12}>
             <Grid container justifyContent="center" item xs={12} >
               {
@@ -160,7 +145,7 @@ export default function TrashNote(props) {
                       <Card onMouseOut={() => hideActionPanel(note._id)} onMouseOver={() => showActionPanel(note._id)} className={clsx(classes.root, "note-card")}
                         onClick={(event) => handleClickOpen(event, note)}>
                         <CardContent>
-                          <Typography className={classes.title} color="textSecondary" gutterBottom>
+                          <Typography className="title" color="textSecondary" gutterBottom>
                             {note.title}
                           </Typography>
                           <Typography variant="body2" component="p">

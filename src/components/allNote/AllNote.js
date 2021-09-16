@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import { makeStyles } from '@material-ui/core/styles';
 import "./AllNote.scss";
 import Grid from '@material-ui/core/Grid';
 import UpdateNote from "../updateNote/UpdateNote";
@@ -10,12 +9,6 @@ import CreateNote from "../createNote/CreateNote";
 import Note from "../notes/Notes";
 import { findAllNotes } from "../../services/Api";
 import { v4 as uuidv4 } from 'uuid';
-const useStyles = makeStyles((theme) => ({
-    root: {
-        minWidth: 275,
-        flexGrow: 1,
-    },
-}));
 /**
  * @description SimpleCard functional component to return Note Card
  * @param props values containing note data
