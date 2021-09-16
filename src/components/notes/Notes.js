@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -29,6 +29,10 @@ const useStyles = makeStyles((theme) => ({
  * @return Note card component
  */
 export default function Notes(props) {
+    const [note, setNote] = useState(props.note);
+    useEffect(() => {
+        setNote(props.note);
+    }, [props.note]);
     const classes = useStyles();
     /**
      * @description function to display card using id
@@ -44,21 +48,20 @@ export default function Notes(props) {
         document.getElementById("pin" + id).classList.add("display-card-action");
         document.getElementById(id).classList.add("display-card-action");
     }
-    const { note } = props;
     return (
         <Grid key={props.index} item xs={12} sm={6} md={4} lg={4}>
             <Card onMouseOut={() => hideActionPanel(note._id)} onMouseOver={() => showActionPanel(note._id)} className={clsx(classes.root, "note-card")}
                 onClick={(event) => props.handleClickOpenCallback(event, note)}>
                 <CardContent>
-                    <Typography onClick={(event) => props.pinNoteFuncCallback(event, note)} id={"pin" + note._id} className="display-card-action">
+                    <div onClick={(event) => props.pinNoteFuncCallback(event, note)} id={"pin" + note._id} className="display-card-action">
                         <div className={note.isPinned ? "pin-note pin" : "pin-note"}></div>
-                    </Typography>
-                    <Typography className={classes.title} color="textSecondary" gutterBottom>
+                    </div>
+                    <div className={classes.title} color="textSecondary">
                         {note.title}
-                    </Typography>
-                    <Typography variant="body2" component="p">
+                    </div>
+                    <div variant="body2" component="p">
                         {note.description}
-                    </Typography>
+                    </div>
                     <div className="chip-section">
                         {note.labels && note.labels.length > 0 && note.labels.filter(lbl => lbl.checked === true).map(label => {
                             return <Chip className="label-chip" key={label._id} label={label.labelName} onDelete={event => props.handleLabelDeleteCallback(event, note, label)} color="primary" />

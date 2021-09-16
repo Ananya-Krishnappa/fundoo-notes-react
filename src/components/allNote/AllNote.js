@@ -9,6 +9,7 @@ import Notification from "../Notification";
 import CreateNote from "../createNote/CreateNote";
 import Note from "../notes/Notes";
 import { findAllNotes } from "../../services/Api";
+import { v4 as uuidv4 } from 'uuid';
 const useStyles = makeStyles((theme) => ({
     root: {
         minWidth: 275,
@@ -22,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
  */
 export default function AllNote(props) {
     const { userId } = useContext(AuthContext);
-    const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorElAddLabel, setAnchorElAddLabel] = useState(null);
     const [noteSelected, setNoteSelected] = useState({});
@@ -92,7 +92,7 @@ export default function AllNote(props) {
      * @description function to find all note on success
      */
     const updateNotesSuccess = (res) => {
-        findNotes(props.match.params.labelName);
+        findNotes(props.routeLabel);
     }
     /**
      * @description function to display message on error
@@ -170,7 +170,7 @@ export default function AllNote(props) {
                 }
             });
         }
-        setNotes(notes);
+        setNotes([...notes]);
     }
     /**
      * @description functionality to find all notes
@@ -363,7 +363,7 @@ export default function AllNote(props) {
                     {
                         notes !== undefined && notes.filter(note => note.isPinned).map((note, index) => {
                             return (
-                                <Note note={note} index={index} handleClickOpenCallback={handleClickOpen}
+                                <Note key={uuidv4()} note={note} index={index} handleClickOpenCallback={handleClickOpen}
                                     pinNoteFuncCallback={pinNoteFunc} handleLabelDeleteCallback={handleLabelDelete}
                                     archiveNoteFuncCallback={archiveNoteFunc} handleMenuClickCallback={handleMenuClick}
                                     anchorEl={anchorEl} handleMenuCloseCallback={handleMenuClose}
@@ -381,7 +381,7 @@ export default function AllNote(props) {
                         notes !== undefined && notes.filter(note => !note.isPinned).map((note, index) => {
                             return (
                                 <React.Fragment>
-                                    <Note note={note} index={index} handleClickOpenCallback={handleClickOpen}
+                                    <Note key={uuidv4()} note={note} index={index} handleClickOpenCallback={handleClickOpen}
                                         pinNoteFuncCallback={pinNoteFunc} handleLabelDeleteCallback={handleLabelDelete}
                                         archiveNoteFuncCallback={archiveNoteFunc} handleMenuClickCallback={handleMenuClick}
                                         anchorEl={anchorEl} handleMenuCloseCallback={handleMenuClose}
