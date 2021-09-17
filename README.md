@@ -74,24 +74,33 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 [
 ![Signin](https://user-images.githubusercontent.com/83151802/132061165-fe08093b-f90e-43d2-9c6e-ad44a78ac2f8.PNG)
 ](url)
+
 ### Register
 [
 ![register](https://user-images.githubusercontent.com/83151802/132061334-63b0d06c-e23e-4854-b810-c55bdaef8f62.PNG)
 ](url)
+
 ### ForgotPassword
 ![forgotPassword](https://user-images.githubusercontent.com/83151802/132061348-ece93e05-b1bc-46b9-af86-64dcf1203c94.PNG)
+
 ### ResetPassword
 ![reset](https://user-images.githubusercontent.com/83151802/132061369-1090cb4e-cb90-4695-8433-cd080ef17d55.PNG)
+
 ### Display-notes
 ![fundoo1](https://user-images.githubusercontent.com/83151802/133309863-59623761-7a9e-4ca3-b449-f7332b1bdd0c.PNG)
+
 ### Drawer
 ![drawerExpanded](https://user-images.githubusercontent.com/83151802/133310931-40e40d40-d7c0-40cc-a777-7648458082ba.PNG)
+
 ### Update Note
 ![updateNote](https://user-images.githubusercontent.com/83151802/133311046-efc416cc-1ae5-48e3-b00a-b77c364e0c69.PNG)
+
 ### Add label
 ![addLabel](https://user-images.githubusercontent.com/83151802/133311132-26aa89f6-af7d-4c6e-b6a9-5a6f7b9b04bd.PNG)
+
 ### create Note
 ![createNote](https://user-images.githubusercontent.com/83151802/133311377-a193cda2-6cdf-49e6-83e2-0bdc52eee19b.PNG)
+
 ### on hover
 ![onHover](https://user-images.githubusercontent.com/83151802/133311430-b786d6be-5aa2-4c12-82d6-8ce2ee3a8d6d.png)
 
