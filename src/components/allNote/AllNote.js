@@ -216,9 +216,13 @@ export default function AllNote(props) {
                 setLabelList([...labelList, newLabel[0]]);
                 const updatedNote = noteSelected;
                 updatedNote.labels.push(newLabel[0]);
+                // const updateNoteBody = {
+                //     userId, title: updatedNote.title, description: updatedNote.description, isPinned: updatedNote.isPinned, labels: updatedNote.labels
+                // };
                 const updateNoteBody = {
-                    userId, title: updatedNote.title, description: updatedNote.description, isPinned: updatedNote.isPinned, labels: updatedNote.labels
-                };
+                    ...updatedNote,
+                    userId
+                    };
                 updateNote(updatedNote._id, updateNoteBody).then((res) => {
                     setNoteToUpdate(res.data.data);
                     updateNotesSuccess(res);
