@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import Axios from "axios";
 import { AuthContext } from "./AuthContext";
-import { authUrl } from "../store/Urls";
+import { login } from "../services/Api";
 import { withRouter } from "react-router-dom";
 class AuthProviderImpl extends Component {
     constructor(props) {
@@ -13,7 +12,7 @@ class AuthProviderImpl extends Component {
         }
     }
     authenticate = (credentials) => {
-        return Axios.post(authUrl, credentials).then(response => {
+        login(credentials).then(response => {
             if (response.data.success === true) {
                 localStorage.setItem("isAuthenticated", true);
                 localStorage.setItem("webToken", response.data.data.token);
