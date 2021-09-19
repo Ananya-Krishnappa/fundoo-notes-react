@@ -7,6 +7,9 @@ const getHeader = () => {
         }
     }
 }
+export const login = (userData) => {
+    return axios.post("/login", userData);
+}
 export const register = (userData) => {
     return axios.post("/register", userData);
 }
