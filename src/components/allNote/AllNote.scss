@@ -7,6 +7,7 @@
     border-color: #e0e0e0;
     box-shadow: none !important;
     min-height: 175px;
+    position: relative;
 }
 .pin-note {
     background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDB6Ii8+CiAgPHBhdGggZmlsbD0iIzAwMCIgZD0iTTE3IDR2N2wyIDN2MmgtNnY1bC0xIDEtMS0xdi01SDV2LTJsMi0zVjRjMC0xLjEuOS0yIDItMmg2YzEuMTEgMCAyIC44OSAyIDJ6TTkgNHY3Ljc1TDcuNSAxNGg5TDE1IDExLjc1VjRIOXoiLz4KPC9zdmc+Cg==);
@@ -41,13 +42,18 @@
 }
 .menu-list {
     border-width: 0;
+    z-index: 1301 !important;
     .MuiPopover-paper{
         border: 1px solid rgba(0, 0, 0, 0.2);
         box-shadow: none;
     }
 }
+.add-label-menu {
+    z-index: 1302 !important;
+}
 .note-list-container {
     margin: 0 0 20px 0;
+    position: relative;
 }
 .label-chip {
     margin: 15px 5px;

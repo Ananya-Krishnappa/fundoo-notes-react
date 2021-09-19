@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import "./CreateNote.scss";
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -130,7 +130,7 @@ export default function CreateNote(props) {
                     message: "Note created Successfully",
                     type: "success",
                 });
-                props.createNoteCallback();
+                props.createNoteCallback("all");
             })
                 .catch((error) => {
                     let message;

@@ -10,12 +10,8 @@ import Button from '@material-ui/core/Button';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import Tooltip from '@material-ui/core/Tooltip';
 import Chip from '@material-ui/core/Chip';
-import Checkbox from '@material-ui/core/Checkbox';
-import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles((theme) => ({
     root: {
         minWidth: 275,
@@ -74,43 +70,13 @@ export default function Notes(props) {
                         </Button>
                     </Tooltip>
                     <IconButton
+                        id="more-action-button"
                         aria-label="more"
                         aria-controls="long-menu"
                         aria-haspopup="true" onClick={(event) => props.handleMenuClickCallback(event, note)}
                     >
                         <MoreVertIcon />
                     </IconButton>
-                    <Menu
-                        id="simple-menu"
-                        anchorEl={props.anchorEl}
-                        keepMounted
-                        open={Boolean(props.anchorEl)}
-                        onClose={props.handleMenuCloseCallback} className="menu-list"
-                    >
-                        <MenuItem onClick={(event) => props.handleDeleteNoteCallback(event, true)}>Delete note</MenuItem>
-                        <MenuItem onClick={(event) => props.handleAddLabelCallback(event, true)}>Add label</MenuItem>
-                    </Menu>
-                    <Menu
-                        id="add-label-menu"
-                        anchorEl={props.anchorElAddLabel}
-                        keepMounted
-                        open={Boolean(props.anchorElAddLabel)}
-                        onClose={props.handleAddLabelMenuCloseCallback} className="add-label-menu"
-                    >
-                        <MenuItem>Label note</MenuItem>
-                        <MenuItem onKeyDown={(e) => e.stopPropagation()}><TextField autoComplete="off" id="labelName-input"
-                            placeholder="Enter label name" fullWidth
-                            onChange={(event) => props.syncLabelNameCallback(event)} name="labelName" value={props.labelName}
-                            InputProps={{ classes, disableUnderline: true }} /></MenuItem>
-                        {props.labelList.map(lbl => {
-                            return <MenuItem key={lbl._id}><Checkbox checked={lbl.checked}
-                                color="primary"
-                                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                                onChange={event => props.handleLabelCheckboxChangeCallback(event, lbl)}
-                            /> {lbl.labelName}</MenuItem>
-                        })}
-                        {props.showCreateLabel && <MenuItem onClick={props.createLabelFuncCallback}>{`+ Create "${props.labelName}"`}</MenuItem>}
-                    </Menu>
                 </CardActions>
             </Card>
         </Grid>

@@ -9,12 +9,25 @@ import CreateNote from "../createNote/CreateNote";
 import Note from "../notes/Notes";
 import { findAllNotes } from "../../services/Api";
 import { v4 as uuidv4 } from 'uuid';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Checkbox from '@material-ui/core/Checkbox';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+const useStyles = makeStyles((theme) => ({
+    root: {
+        minWidth: 275,
+        flexGrow: 1,
+    },
+}));
+
 /**
  * @description SimpleCard functional component to return Note Card
  * @param props values containing note data
  * @return Note card component
  */
 export default function AllNote(props) {
+    const classes = useStyles();
     const { userId } = useContext(AuthContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorElAddLabel, setAnchorElAddLabel] = useState(null);
@@ -117,13 +130,9 @@ export default function AllNote(props) {
     /**
      * @description function to handle delete note functionality
      */
-    const handleDeleteNote = (event, isParent, note) => {
+    const handleDeleteNote = (event) => {
         let noteId = '';
-        if (isParent) {
-            noteId = noteSelected._id;
-        } else {
-            noteId = note._id;
-        }
+        noteId = noteSelected._id;
         setAnchorEl(null);
         event.stopPropagation();
         const reqBody = {
@@ -222,7 +231,7 @@ export default function AllNote(props) {
                 const updateNoteBody = {
                     ...updatedNote,
                     userId
-                    };
+                };
                 updateNote(updatedNote._id, updateNoteBody).then((res) => {
                     setNoteToUpdate(res.data.data);
                     updateNotesSuccess(res);
@@ -399,7 +408,39 @@ export default function AllNote(props) {
                     labelList={labelList} handleLabelCheckboxChangeCallback={handleLabelCheckboxChange}
                     createLabelFuncCallback={createLabelFunc} syncLabelNameCallback={syncLabelName}
                     handleMenuClickCallback={handleMenuClick} handleMenuCloseCallback={handleMenuClose}
-                    archiveNoteFuncCallback={archiveNoteFunc}></UpdateNote>
+                    archiveNoteFuncCallback={archiveNoteFunc} anchorEl={anchorEl} anchorElAddLabel={anchorElAddLabel}></UpdateNote>
+                <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleMenuClose} className="menu-list"
+                    MenuListProps={{
+                        'aria-labelledby': 'more-action-button',
+                    }}
+                >
+                    <MenuItem onClick={(event) => handleDeleteNote(event)}>Delete note</MenuItem>
+                    <MenuItem onClick={(event) => handleAddLabel(event)}>Add label</MenuItem>
+                </Menu>
+                <Menu
+                    id="add-label-menu"
+                    anchorEl={anchorElAddLabel}
+                    keepMounted
+                    open={Boolean(anchorElAddLabel)}
+                    onClose={handleAddLabelMenuClose} className="add-label-menu"
+                >
+                    <MenuItem>Label note</MenuItem>
+                    <MenuItem onKeyDown={(e) => e.stopPropagation()}><TextField autoComplete="off" id="labelName-input" placeholder="Enter label name" fullWidth
+                        onChange={(event) => syncLabelName(event)} name="labelName" value={labelName}
+                        InputProps={{ classes, disableUnderline: true }} /></MenuItem>
+                    {labelList && labelList.map(lbl => {
+                        return <MenuItem key={lbl._id}><Checkbox checked={lbl.checked}
+                            color="primary"
+                            inputProps={{ 'aria-label': 'secondary checkbox' }} onChange={event => handleLabelCheckboxChange(event, lbl)}
+                        /> {lbl.labelName}</MenuItem>
+                    })}
+                    {showCreateLabel && <MenuItem onClick={createLabelFunc}>{`+ Create "${labelName}"`}</MenuItem>}
+                </Menu>
                 <Notification notify={notify} setNotify={setNotify} />
             </div >
         </React.Fragment >

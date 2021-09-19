@@ -208,9 +208,9 @@ export default function ArchiveNote(props) {
                       <Card onMouseOut={() => hideActionPanel(note._id)} onMouseOver={() => showActionPanel(note._id)} className={clsx(classes.root, "note-card")}
                         onClick={(event) => handleClickOpen(event, note)}>
                         <CardContent>
-                          <Typography onClick={(event) => pinNoteFunc(event, note)} id={"pin" + note._id} className="display-card-action">
+                          <div onClick={(event) => pinNoteFunc(event, note)} id={"pin" + note._id} className="display-card-action">
                             <div className={note.isPinned ? "pin-note pin" : "pin-note"}></div>
-                          </Typography>
+                          </div>
                           <Typography className="title" color="textSecondary" gutterBottom>
                             {note.title}
                           </Typography>
