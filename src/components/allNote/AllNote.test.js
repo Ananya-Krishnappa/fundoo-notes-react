@@ -3,7 +3,7 @@ import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import Enzyme, { shallow, mount } from "enzyme";
 import AllNote from "./AllNote";
 import { render, unmountComponentAtNode } from "react-dom";
-// import { act } from "react-dom/test-utils";
+import { act } from "react-dom/test-utils";
 // import * as apis from "../services/Api";
 
 let container = null;
@@ -24,7 +24,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 it("Fully Renders one create note container", () => {
     const wrapper = mount(<AllNote />);
-    const createNoteContainer = wrapper.find("div.create-note-container").length;
+    const createNoteContainer = wrapper.find("div.note-list-container").length;
     expect(createNoteContainer).toBe(1);
 });
 
