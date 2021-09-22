@@ -90,7 +90,7 @@ const ResetPassword = () => {
     };
     return (
         <div>
-            <Header></Header>
+            {/* <Header></Header> */}
             <Grid className="formStyle">
                 <Paper className="forgot-password-container register-paper">
                     <div className="register-form">

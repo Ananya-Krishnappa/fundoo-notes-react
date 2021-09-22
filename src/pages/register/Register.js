@@ -102,7 +102,7 @@ const Register = () => {
     };
     return (
         <div>
-            <Header></Header>
+            {/* <Header></Header> */}
             <Grid className="formStyle">
                 <Paper className="register-container register-paper">
                     <div className="register-form">

@@ -7,10 +7,10 @@ import { AuthContext } from "./AuthContext";
 export const Authorization = () => {
     const { isAuthenticated } = useContext(AuthContext);
     return (<div className="container-fluid" >
-        {
+        {/* {
             !isAuthenticated &&
             <Header title="FundooNotes"></Header>
-        }
+        } */}
         <div className="row">
             <div className="col fundoo-body">
                 <Switch>
