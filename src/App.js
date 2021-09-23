@@ -15,14 +15,14 @@ export class App extends Component {
             <Router>
                 <AuthProviderImpl>
                     <Switch>
-                        <Route path="/login" render={
+                        <Route path="/fundoo" render={
                             routeProps =>
                                 <Authorization {...routeProps} />
                         } />
                         <Route path="/register" component={Register} />
                         <Route path="/forgotPassword" component={ForgotPassword} />
                         <Route path="/resetPassword" component={ResetPassword} />
-                        <Redirect to="/login" />
+                        <Redirect to="/fundoo" />
                     </Switch>
                 </AuthProviderImpl>
             </Router>
